@@ -62,17 +62,16 @@ class ProxyCrawler(object):
 		self.write_ip(ip_list)
 
 
-def task():
-	crawler = ProxyCrawler()
-	crawler.run()
-	schedule = Scheduler()
-	schedule.every().hours.do(crawler.run)
-	while True:
-		schedule.run_pending()
-		time.sleep(1)
-
-
 def start():
+	def task():
+		crawler = ProxyCrawler()
+		crawler.run()
+		schedule = Scheduler()
+		schedule.every().hours.do(crawler.run)
+		while True:
+			schedule.run_pending()
+			time.sleep(1)
+
 	thread = threading.Thread(target=task)
 	thread.start()
 
