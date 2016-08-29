@@ -1,30 +1,56 @@
 from scrapy.spiders import CrawlSpider, Rule
-from scrapy.linkextractors import LinkExtractor as sle
+from scrapy.linkextractors import LinkExtractor
 from msic import log
 from scrapy.selector import Selector
-from scrapy.http import HtmlResponse
+from msic import constant
+from tubatu.tubatu.items import RoomDesignItem
+import scrapy
 
 
 class RoomSpider(CrawlSpider):
-	name = 'to8to.com'
+	start_url_domain = 'xiaoguotu.to8to.com'
+	name = 'to8to_room'
 	allowed_domains = ['to8to.com']
 	start_urls = ['http://xiaoguotu.to8to.com/meitu/']
 	rules = (
-		Rule(sle(allow="/meitu/p_\d+.html"), follow=True, callback='parse_item'),
+		Rule(LinkExtractor(allow="/meitu/p_\d+.html"), follow=True, callback='parse_list'),
 	)
 
-	def parse_item(self, response):
+	def parse_list(self, response):
+		log.info("parse :" + response.url)
+
 		selector = Selector(response)
 		items_selector = selector.xpath('//div[@class="xmp_container"]//div[@class="item"]')
 		for items_selector in items_selector:
 			original_width = items_selector.xpath('@original_width').extract()[0]
 			original_height = items_selector.xpath('@original_height').extract()[0]
-			href = self.name + items_selector.xpath('div//a/@href').extract()[0]
+			# http://xiaoguotu.to8to.com/p10221610.html
+			href = constant.PROTOCOL_HTTP + self.start_url_domain + items_selector.xpath('div//a/@href').extract()[0]
 			title = items_selector.xpath('div//a/@title').extract()[0]
 
-			log.info("parse " + response.url)
-			log.info("title:" + title)
-			log.info("original_width:" + original_width)
-			log.info("original_height:" + original_height)
-			log.info("href:" + href)
-			log.info("=========================================================================================")
+			room_design_item = RoomDesignItem(
+				url=href,
+				title=title,
+				image_width=original_width,
+				image_height=original_height,
+			)
+			yield scrapy.Request(href, self.parse_content, meta={'item': room_design_item})
+
+	def parse_content(self, response):
+		log.info("parse :" + response.url)
+
+		# self.handle_response(response)
+
+		selector = Selector(response)
+		img_url = selector.xpath('//img[@id="show_img"]/@src').extract()[0]
+		img_url2 = selector.xpath('//div[@class="img_div_tag cur-r"]')
+
+		room_design_item = response.meta['item']  # type: RoomDesignItem
+		room_design_item['image_url'] = img_url
+
+		log.info("title:" + room_design_item['title'])
+		log.info("original_width:" + room_design_item['image_width'])
+		log.info("original_height:" + room_design_item['image_height'])
+		log.info("url:" + room_design_item['url'])
+		log.info("image_url:" + room_design_item['image_url'])
+		log.info("=========================================================================================")

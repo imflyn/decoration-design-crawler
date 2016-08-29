@@ -9,11 +9,11 @@ import scrapy
 
 
 class RoomDesignItem(scrapy.Item):
-	name = scrapy.Field()
-	component = scrapy.Field()
-	style = scrapy.Field()
-	color = scrapy.Field()
 	title = scrapy.Field()
+	url = scrapy.Field()
+	tags = scrapy.Field()
 	description = scrapy.Field()
 	image_url = scrapy.Field()
+	image_width = scrapy.Field()
+	image_height = scrapy.Field()
 	pass

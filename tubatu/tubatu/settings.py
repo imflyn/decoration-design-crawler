@@ -52,8 +52,9 @@ COOKIES_ENABLED = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-	'tubatu.middleware.CustomUserAgentMiddleware': 543,
-	'tubatu.middleware.CustomHttpProxyMiddleware': 545,
+	'msic.middlewares.CustomUserAgentMiddleware': 401,
+	'msic.middlewares.CustomHttpProxyMiddleware': 402,
+	'msic.middlewares.JavaScriptMiddleware': 403,
 }
 
 # Enable or disable extensions
@@ -88,3 +89,5 @@ DOWNLOADER_MIDDLEWARES = {
 # HTTPCACHE_DIR = 'httpcache'
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
+
+AJAXCRAWL_ENABLED = True
