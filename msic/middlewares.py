@@ -51,4 +51,4 @@ class JavaScriptMiddleware(object):
 		self.driver = webdriver.PhantomJS()
 
 	def spider_closed(self, spider):
-		self.driver.close()
+		self.driver.quit()

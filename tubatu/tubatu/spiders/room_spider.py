@@ -41,9 +41,12 @@ class RoomSpider(CrawlSpider):
 
 		selector = Selector(response)
 		img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
+		tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()
 
 		room_design_item = response.meta['item']  # type: RoomDesignItem
 		room_design_item['image_url'] = img_url
+		room_design_item['tags'] = tags
+		room_design_item['description'] = room_design_item['title']
 
 		log.info("=========================================================================================")
 		log.info("title:" + room_design_item['title'])
@@ -51,4 +54,8 @@ class RoomSpider(CrawlSpider):
 		log.info("original_height:" + room_design_item['image_height'])
 		log.info("url:" + room_design_item['url'])
 		log.info("image_url:" + room_design_item['image_url'])
+		log.info("description:" + room_design_item['description'])
+		log.info("tags:%s" % ','.join(map(str, room_design_item['tags'])))
 		log.info("=========================================================================================")
+
+		return room_design_item
