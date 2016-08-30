@@ -3,13 +3,13 @@ from scrapy.linkextractors import LinkExtractor
 from msic import log
 from scrapy.selector import Selector
 from msic import constant
-from tubatu.tubatu.items import RoomDesignItem
+from tubatu.items import RoomDesignItem
 import scrapy
 
 
 class RoomSpider(CrawlSpider):
 	start_url_domain = 'xiaoguotu.to8to.com'
-	name = 'to8to_room'
+	name = 'room'
 	allowed_domains = ['to8to.com']
 	start_urls = ['http://xiaoguotu.to8to.com/meitu/']
 	rules = (
@@ -34,20 +34,18 @@ class RoomSpider(CrawlSpider):
 				image_width=original_width,
 				image_height=original_height,
 			)
-			yield scrapy.Request(href, self.parse_content, meta={'item': room_design_item})
+			yield scrapy.Request(href, self.parse_content, meta={'item': room_design_item, 'javascript': True})
 
 	def parse_content(self, response):
 		log.info("parse :" + response.url)
 
-		# self.handle_response(response)
-
 		selector = Selector(response)
-		img_url = selector.xpath('//img[@id="show_img"]/@src').extract()[0]
-		img_url2 = selector.xpath('//div[@class="img_div_tag cur-r"]')
+		img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
 
 		room_design_item = response.meta['item']  # type: RoomDesignItem
 		room_design_item['image_url'] = img_url
 
+		log.info("=========================================================================================")
 		log.info("title:" + room_design_item['title'])
 		log.info("original_width:" + room_design_item['image_width'])
 		log.info("original_height:" + room_design_item['image_height'])

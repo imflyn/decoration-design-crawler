@@ -29,18 +29,11 @@ class CustomHttpProxyMiddleware(object):
 
 class CustomUserAgentMiddleware(object):
 	def process_request(self, request, spider):
-		agent = random.choice(agents)
+		agent = random.choice(agents.AGENTS_ALL)
 		request.headers['User-Agent'] = agent
 
 
 class JavaScriptMiddleware(object):
-	# def process_request(self, request, spider):
-	# 	driver = webdriver.PhantomJS()
-	# 	driver.get(request.url)
-	#
-	# 	body = driver.page_source
-	# 	return HtmlResponse(driver.current_url, body=body, encoding='utf-8', request=request)
-
 	@classmethod
 	def from_crawler(cls, crawler):
 		middleware = cls()
@@ -49,9 +42,10 @@ class JavaScriptMiddleware(object):
 		return middleware
 
 	def process_request(self, request, spider):
-		self.driver.get(request.url)
-		body = self.driver.page_source
-		return HtmlResponse(self.driver.current_url, body=body, encoding='utf-8', request=request)
+		if 'javascript' in request.meta and request.meta['javascript'] is True:
+			self.driver.get(request.url)
+			body = self.driver.page_source
+			return HtmlResponse(self.driver.current_url, body=body, encoding='utf-8', request=request)
 
 	def spider_opened(self, spider):
 		self.driver = webdriver.PhantomJS()
