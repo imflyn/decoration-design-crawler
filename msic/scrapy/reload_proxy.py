@@ -1,10 +1,12 @@
+import threading
+import time
+
+import requests
 from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
-import requests
-import time
-import threading
 from schedule import Scheduler
-from msic import proxy
+
+from msic.common import proxy
 
 HEADERS = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36',

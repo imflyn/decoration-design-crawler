@@ -1,10 +1,10 @@
 import random
 
 from scrapy import signals
-
-from msic import agents, log, proxy
-from selenium import webdriver
 from scrapy.http import HtmlResponse
+from selenium import webdriver
+
+from msic.common import log, agents, proxy
 
 
 class CustomHttpProxyMiddleware(object):

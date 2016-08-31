@@ -10,7 +10,7 @@ import scrapy
 
 class RoomDesignItem(scrapy.Item):
 	title = scrapy.Field()
-	url = scrapy.Field()
+	html_url = scrapy.Field()
 	tags = scrapy.Field()
 	description = scrapy.Field()
 	image_url = scrapy.Field()

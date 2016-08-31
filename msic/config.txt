@@ -1,0 +1,2 @@
+[File]
+image_save_path=D:\decoration-design

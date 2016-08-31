@@ -1,10 +1,10 @@
-from scrapy.spiders import CrawlSpider, Rule
-from scrapy.linkextractors import LinkExtractor
-from msic import log
-from scrapy.selector import Selector
-from msic import constant
-from tubatu.items import RoomDesignItem
 import scrapy
+from scrapy.linkextractors import LinkExtractor
+from scrapy.selector import Selector
+from scrapy.spiders import CrawlSpider, Rule
+
+from msic.common import constant, log
+from tubatu.items import RoomDesignItem
 
 
 class RoomSpider(CrawlSpider):
@@ -15,6 +15,12 @@ class RoomSpider(CrawlSpider):
 	rules = (
 		Rule(LinkExtractor(allow="/meitu/p_\d+.html"), follow=True, callback='parse_list'),
 	)
+	custom_settings = {
+		'ITEM_PIPELINES': {
+			'tubatu.pipelines.ImagePipeline': 300,
+			'tubatu.pipelines.RoomPipeline': 301
+		}
+	}
 
 	def parse_list(self, response):
 		log.info("parse :" + response.url)
@@ -25,16 +31,16 @@ class RoomSpider(CrawlSpider):
 			original_width = items_selector.xpath('@original_width').extract()[0]
 			original_height = items_selector.xpath('@original_height').extract()[0]
 			# http://xiaoguotu.to8to.com/p10221610.html
-			href = constant.PROTOCOL_HTTP + self.start_url_domain + items_selector.xpath('div//a/@href').extract()[0]
+			next_url = constant.PROTOCOL_HTTP + self.start_url_domain + items_selector.xpath('div//a/@href').extract()[0]
 			title = items_selector.xpath('div//a/@title').extract()[0]
 
 			room_design_item = RoomDesignItem(
-				url=href,
+				html_url=next_url,
 				title=title,
 				image_width=original_width,
 				image_height=original_height,
 			)
-			yield scrapy.Request(href, self.parse_content, meta={'item': room_design_item, 'javascript': True})
+			yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
 
 	def parse_content(self, response):
 		log.info("parse :" + response.url)
@@ -52,7 +58,7 @@ class RoomSpider(CrawlSpider):
 		log.info("title:" + room_design_item['title'])
 		log.info("original_width:" + room_design_item['image_width'])
 		log.info("original_height:" + room_design_item['image_height'])
-		log.info("url:" + room_design_item['url'])
+		log.info("html_url:" + room_design_item['html_url'])
 		log.info("image_url:" + room_design_item['image_url'])
 		log.info("description:" + room_design_item['description'])
 		log.info("tags:%s" % ','.join(map(str, room_design_item['tags'])))

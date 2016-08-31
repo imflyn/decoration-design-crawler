@@ -1,7 +1,7 @@
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from msic import reload_proxy
+from msic.scrapy import reload_proxy
 from tubatu.spiders.room_spider import RoomSpider
 
 reload_proxy.start()
