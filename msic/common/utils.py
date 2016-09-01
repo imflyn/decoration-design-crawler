@@ -2,6 +2,7 @@ import uuid
 import datetime
 import time
 import hashlib
+import configparser
 
 
 # 2a47d8b6-6f5b-11e6-ac9d-64006a0b51ab
@@ -18,6 +19,12 @@ def get_md5(content: str) -> str:
 	md5 = hashlib.md5()
 	md5.update(content.encode('utf-8'))
 	return md5.hexdigest()
+
+
+def get_configure_content(file_path: str, section: str, option: str) -> str:
+	parser = configparser.ConfigParser()
+	parser.read(file_path)
+	return parser.get(section, option)
 
 
 if __name__ == '__main__':

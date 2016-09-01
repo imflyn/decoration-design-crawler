@@ -16,4 +16,5 @@ class RoomDesignItem(scrapy.Item):
 	image_url = scrapy.Field()
 	image_width = scrapy.Field()
 	image_height = scrapy.Field()
+	image_name = scrapy.Field()
 	pass

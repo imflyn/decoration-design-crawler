@@ -58,9 +58,9 @@ COOKIES_ENABLED = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-	'msic.middlewares.CustomUserAgentMiddleware': 401,
-	'msic.middlewares.CustomHttpProxyMiddleware': 402,
-	'msic.middlewares.JavaScriptMiddleware': 403,
+	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 401,
+	'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 402,
+	'msic.scrapy.middlewares.JavaScriptMiddleware': 403,
 }
 
 # Enable or disable extensions
@@ -72,7 +72,8 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-	'tubatu.pipelines.RoomPipeline': 301,
+	# 'tubatu.pipelines.RoomPipeline': 301,
+	# 'tubatu.pipelines.ImagePipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
