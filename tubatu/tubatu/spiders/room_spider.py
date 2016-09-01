@@ -18,13 +18,11 @@ class RoomSpider(CrawlSpider):
 	custom_settings = {
 		'ITEM_PIPELINES': {
 			'tubatu.pipelines.RoomPipeline': 301,
-			'tubatu.pipelines.ImagePipeline': 302,
+			'tubatu.pipelines.ImageCachePipeline': 302,
 		}
 	}
 
 	def parse_list(self, response):
-		log.info("parse :" + response.url)
-
 		selector = Selector(response)
 		items_selector = selector.xpath('//div[@class="xmp_container"]//div[@class="item"]')
 		for items_selector in items_selector:
@@ -43,8 +41,6 @@ class RoomSpider(CrawlSpider):
 			yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
 
 	def parse_content(self, response):
-		log.info("parse :" + response.url)
-
 		selector = Selector(response)
 		img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
 		tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()

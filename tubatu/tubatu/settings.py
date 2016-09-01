@@ -27,7 +27,7 @@ NEWSPIDER_MODULE = 'tubatu.spiders'
 ROBOTSTXT_OBEY = True
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-# CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
@@ -72,8 +72,6 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-	# 'tubatu.pipelines.RoomPipeline': 301,
-	# 'tubatu.pipelines.ImagePipeline': 400,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -98,3 +96,4 @@ ITEM_PIPELINES = {
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 AJAXCRAWL_ENABLED = True
+IMAGES_STORE = '/scrapy'

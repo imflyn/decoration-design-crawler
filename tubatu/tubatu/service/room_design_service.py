@@ -1,5 +1,6 @@
 from msic.core.service import mongodb_service
 from tubatu.msic import constants
+from msic.common import log
 from msic.common import utils
 from tubatu.items import RoomDesignItem
 from tubatu.model.room_design import RoomDesignModel
@@ -39,8 +40,11 @@ class RoomDesignService(object):
 
 		return room_design_model
 
-	def saveToDatabase(self, room_design_model: RoomDesignModel):
-		mongodb_service.insert(self.collection, room_design_model.__dict__)
+	def save_to_database(self, room_design_model: RoomDesignModel):
+		try:
+			mongodb_service.insert(self.collection, room_design_model.__dict__)
+		except Exception as e:
+			log.error(e)
 
 	def __del__(self):
 		self.client.close()

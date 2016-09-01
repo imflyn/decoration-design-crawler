@@ -12,6 +12,7 @@ reload_proxy.start()
 # d.addBoth(lambda _: reactor.stop())
 # reactor.run()
 
+
 process = CrawlerProcess(get_project_settings())
 process.crawl(RoomSpider())
 process.start()

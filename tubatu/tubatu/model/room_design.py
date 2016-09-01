@@ -10,7 +10,7 @@ class RoomDesignModel(object):
 		self.image_height = 0
 		self.image_file_path = ""
 		self.create_time = 0
-		self.image_name = ""
+		self.image_name = ""  # /tubatu/2016-09-01/ff5e6d6e5abafbaeb56af2b5034d83e9
 
 	# def __iter__(self):
 	# 	yield '_id', self._id

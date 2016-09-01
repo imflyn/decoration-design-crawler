@@ -1,6 +1,12 @@
 import logging
 
 logger = logging.getLogger()
+fh = logging.FileHandler('../error.log')
+fh.setLevel(logging.ERROR)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+fh.setFormatter(formatter)
+
+logger.addHandler(fh)
 
 
 def warn(msg):
@@ -15,5 +21,5 @@ def debug(msg):
 	logger.debug(msg)
 
 
-def error(msg):
-	logger.error(msg)
+def error(e: Exception):
+	logger.error("Exception %s" % e)

@@ -2,3 +2,4 @@ scrapy
 selenium
 six
 pymongo
+pillow

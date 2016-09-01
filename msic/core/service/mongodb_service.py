@@ -2,16 +2,18 @@ from pymongo import MongoClient, errors
 from pymongo.database import Database
 from pymongo.collection import Collection
 
+from msic.common import log
+
 MAX_POOL_SIZE = 5
 
 
 def get_client(host: str, port: int) -> MongoClient:
 	try:
 		client = MongoClient(host, port, maxPoolSize=MAX_POOL_SIZE)
-		print("Connected successfully!!!")
+		log.info("Connected successfully!!!")
 		return client
 	except errors.ConnectionFailure as e:
-		print("Could not connect to MongoDB: %s" % e)
+		log.error(e)
 
 
 def get_db(client: MongoClient, db_name: str) -> Database:

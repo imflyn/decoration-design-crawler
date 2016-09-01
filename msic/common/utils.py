@@ -1,8 +1,8 @@
 import uuid
 import datetime
-import time
 import hashlib
 import configparser
+import os
 
 
 # 2a47d8b6-6f5b-11e6-ac9d-64006a0b51ab
@@ -27,7 +27,12 @@ def get_configure_content(file_path: str, section: str, option: str) -> str:
 	return parser.get(section, option)
 
 
+def make_dirs(path: str):
+	os.makedirs(path, exist_ok=True)
+
+
 if __name__ == '__main__':
 	print("uuid:" + get_uuid())
 	print("utc time:" + get_utc_time())
 	print("md5:" + get_md5(get_uuid()))
+	make_dirs("D:\\scrapy\\thumbs\\small")
