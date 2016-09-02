@@ -17,8 +17,11 @@ def get_client(host: str, port: int) -> MongoClient:
 
 
 def get_db(client: MongoClient, db_name: str) -> Database:
-	db = Database(client, db_name)
-	return db
+	try:
+		db = Database(client, db_name)
+		return db
+	except Exception as e:
+		log.error(e)
 
 
 def get_collection(db: Database, name: str) -> Collection:

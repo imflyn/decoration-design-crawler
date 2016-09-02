@@ -14,7 +14,7 @@ TABLE_NAME = "room_design"
 class RoomDesignService(object):
 	def __init__(self):
 		self.collection = mongodb_service.get_collection(config.mongodb, TABLE_NAME)
-		self.redis_bloom_filter = RedisBloomFilter()
+		self.redis_bloom_filter = RedisBloomFilter(config.redis_client)
 
 	def get_model(self, room_design_item: RoomDesignItem) -> RoomDesignModel:
 		room_design_model = RoomDesignModel()
@@ -38,13 +38,14 @@ class RoomDesignService(object):
 		except Exception as e:
 			log.error(e)
 
-	def filter_item(self, value: str) -> bool:
-		if self.redis_bloom_filter.is_contains(value, TABLE_NAME):
-			return False
-		else:
-			self.redis_bloom_filter.insert(value, TABLE_NAME)
-			return True
+	def is_duplicate_url(self, value: str) -> bool:
+		return self.redis_bloom_filter.is_contains(value, TABLE_NAME)
 
-	def handle_item(self, room_design_item: RoomDesignItem):
+	def insert_to_redis(self, value: str):
+		self.redis_bloom_filter.insert(value, TABLE_NAME)
+
+	def handle_item(self, room_design_item: RoomDesignItem) -> RoomDesignModel:
 		room_design_model = self.get_model(room_design_item)
 		self.save_to_database(room_design_model)
+		self.insert_to_redis(room_design_model.html_url)
+		return room_design_model

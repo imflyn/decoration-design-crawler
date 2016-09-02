@@ -66,7 +66,7 @@ class ProxyCrawler(object):
 		proxies = {"http": ip}
 		header = HEADERS
 		try:
-			req = requests.get(url, proxies=proxies, timeout=20, headers=header)
+			req = requests.get(url, proxies=proxies, timeout=10, headers=header)
 			if req.status_code == requests.codes.ok:
 				return True
 			else:

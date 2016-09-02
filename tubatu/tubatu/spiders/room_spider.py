@@ -34,7 +34,7 @@ class RoomSpider(CrawlSpider):
 			title = items_selector.xpath('div//a/@title').extract()[0]
 
 			room_design_service = RoomDesignService()
-			if room_design_service.filter_item(next_url):
+			if not room_design_service.is_duplicate_url(next_url):
 				room_design_item = RoomDesignItem(
 					html_url=next_url,
 					title=title,

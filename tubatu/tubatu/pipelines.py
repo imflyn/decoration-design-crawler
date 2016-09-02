@@ -18,8 +18,7 @@ class RoomPipeline(object):
 		self.room_design_service = RoomDesignService()
 
 	def process_item(self, item, spider):
-		room_design_model = self.room_design_service.get_model(item)
-		self.room_design_service.save_to_database(room_design_model)
+		room_design_model = self.room_design_service.handle_item(item)
 		item['image_name'] = room_design_model.image_name
 		return item
 
