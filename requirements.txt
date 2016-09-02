@@ -6,3 +6,4 @@ pillow
 requests
 schedule
 beautifulsoup4
+redis

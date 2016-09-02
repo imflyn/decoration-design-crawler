@@ -1,28 +1,20 @@
-from msic.core.service import mongodb_service
-from tubatu.msic import constants
 from msic.common import log
 from msic.common import utils
+from msic.core.service.bloom_filter_service import RedisBloomFilter
+from tubatu import config
+
+from tubatu.constants import PORJECT_NAME
 from tubatu.items import RoomDesignItem
 from tubatu.model.room_design import RoomDesignModel
-import os
-from os.path import dirname
+from msic.core.service import mongodb_service
 
-CONFIGURE_FILE_PATH = dirname(dirname(dirname(os.path.realpath(__file__)))) + "\\scrapy.cfg"
-SECTION_DATABASE = "database"
-OPTION_HOST = "host"
-OPTION_PORT = "prot"
-
-DATABASE_NAME = "tubatu"
 TABLE_NAME = "room_design"
 
 
 class RoomDesignService(object):
 	def __init__(self):
-		host = utils.get_configure_content(CONFIGURE_FILE_PATH, SECTION_DATABASE, OPTION_HOST)
-		port = utils.get_configure_content(CONFIGURE_FILE_PATH, SECTION_DATABASE, OPTION_PORT)
-		self.client = mongodb_service.get_client(host, int(port))
-		self.db = mongodb_service.get_db(self.client, DATABASE_NAME)
-		self.collection = mongodb_service.get_collection(self.db, TABLE_NAME)
+		self.collection = mongodb_service.get_collection(config.mongodb, TABLE_NAME)
+		self.redis_bloom_filter = RedisBloomFilter()
 
 	def get_model(self, room_design_item: RoomDesignItem) -> RoomDesignModel:
 		room_design_model = RoomDesignModel()
@@ -35,7 +27,7 @@ class RoomDesignService(object):
 		room_design_model.image_width = room_design_item['image_width']
 		room_design_model.image_height = room_design_item['image_height']
 		room_design_model.create_time = utils.get_utc_time()
-		room_design_model.image_name = "/" + constants.PORJECT_NAME + "/" + room_design_model.create_time[0:10] + "/" + utils.get_md5(
+		room_design_model.image_name = "/" + PORJECT_NAME + "/" + room_design_model.create_time[0:10] + "/" + utils.get_md5(
 			room_design_model.create_time + room_design_model.html_url)
 
 		return room_design_model
@@ -46,5 +38,13 @@ class RoomDesignService(object):
 		except Exception as e:
 			log.error(e)
 
-	def __del__(self):
-		self.client.close()
+	def filter_item(self, value: str) -> bool:
+		if self.redis_bloom_filter.is_contains(value, TABLE_NAME):
+			return False
+		else:
+			self.redis_bloom_filter.insert(value, TABLE_NAME)
+			return True
+
+	def handle_item(self, room_design_item: RoomDesignItem):
+		room_design_model = self.get_model(room_design_item)
+		self.save_to_database(room_design_model)

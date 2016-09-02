@@ -3,6 +3,7 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.selector import Selector
 from scrapy.spiders import CrawlSpider, Rule
 
+from tubatu.service.room_design_service import RoomDesignService
 from msic.common import constant, log
 from tubatu.items import RoomDesignItem
 
@@ -32,13 +33,17 @@ class RoomSpider(CrawlSpider):
 			next_url = constant.PROTOCOL_HTTP + self.start_url_domain + items_selector.xpath('div//a/@href').extract()[0]
 			title = items_selector.xpath('div//a/@title').extract()[0]
 
-			room_design_item = RoomDesignItem(
-				html_url=next_url,
-				title=title,
-				image_width=original_width,
-				image_height=original_height,
-			)
-			yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
+			room_design_service = RoomDesignService()
+			if room_design_service.filter_item(next_url):
+				room_design_item = RoomDesignItem(
+					html_url=next_url,
+					title=title,
+					image_width=original_width,
+					image_height=original_height,
+				)
+				yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
+			else:
+				log.warn("filter url: %s" % next_url)
 
 	def parse_content(self, response):
 		selector = Selector(response)
