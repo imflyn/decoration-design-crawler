@@ -9,7 +9,7 @@ from tubatu.items import RoomDesignItem
 
 class RoomSpider(CrawlSpider):
 	start_url_domain = 'xiaoguotu.to8to.com'
-	name = 'room'
+	name = 'room_spider'
 	allowed_domains = ['to8to.com']
 	start_urls = ['http://xiaoguotu.to8to.com/meitu/']
 	rules = (

@@ -1,7 +1,7 @@
 import logging, sys
 
 logger = logging.getLogger()
-fh = logging.FileHandler('../error.log')
+fh = logging.FileHandler('../error.log', encoding='utf-8')
 fh.setLevel(logging.ERROR)
 formatter = logging.Formatter('\n%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 fh.setFormatter(formatter)

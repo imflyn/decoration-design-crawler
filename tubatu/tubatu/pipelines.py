@@ -8,7 +8,6 @@ import scrapy
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.utils.project import get_project_settings
 
-from msic.common import log
 from msic.common import utils
 from tubatu.service.room_design_service import RoomDesignService
 
