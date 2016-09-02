@@ -7,23 +7,19 @@
 import scrapy
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.utils.project import get_project_settings
-
+from tubatu.constants import PORJECT_NAME
 from msic.common import utils
 from tubatu.service.room_design_service import RoomDesignService
 
 
 class RoomPipeline(object):
-	def __init__(self):
-		super().__init__()
-		self.room_design_service = RoomDesignService()
-
 	def process_item(self, item, spider):
-		room_design_model = self.room_design_service.handle_item(item)
-		item['image_name'] = room_design_model.image_name
+		create_time = utils.get_utc_time()
+		item['image_name'] = "/" + PORJECT_NAME + "/" + create_time[0:10] + "/" + utils.get_md5(create_time + item['html_url'])
 		return item
 
 
-class ImageCachePipeline(ImagesPipeline):
+class CustomImagesPipeline(ImagesPipeline):
 	MIN_WIDTH = 0
 	MIN_HEIGHT = 0
 	EXPIRES = 90
@@ -31,9 +27,6 @@ class ImageCachePipeline(ImagesPipeline):
 		'small': (200, 200),
 		'big': (500, 500)
 	}
-
-	def item_completed(self, results, item, info):
-		print(results)
 
 	def get_media_requests(self, item, info):
 		if 'image_url' in item:
@@ -63,3 +56,13 @@ class ImageCachePipeline(ImagesPipeline):
 		date = name_data[1]
 		file_name = name_data[2]
 		return "/" + project_name + "/" + date + "/" + file_name
+
+
+class RoomImagePipeline(CustomImagesPipeline):
+	def __init__(self, store_uri, download_func=None, settings=None):
+		super(RoomImagePipeline, self).__init__(store_uri, settings=settings, download_func=download_func)
+		self.room_design_service = RoomDesignService()
+
+	def item_completed(self, results, item, info):
+		self.room_design_service.handle_item(item)
+		print(results)

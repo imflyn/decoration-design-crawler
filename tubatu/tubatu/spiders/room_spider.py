@@ -19,7 +19,7 @@ class RoomSpider(CrawlSpider):
 	custom_settings = {
 		'ITEM_PIPELINES': {
 			'tubatu.pipelines.RoomPipeline': 301,
-			'tubatu.pipelines.ImageCachePipeline': 302,
+			'tubatu.pipelines.RoomImagePipeline': 302,
 		}
 	}
 

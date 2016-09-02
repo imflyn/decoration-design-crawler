@@ -26,10 +26,7 @@ class RoomDesignService(object):
 		room_design_model.image_url = room_design_item['image_url']
 		room_design_model.image_width = room_design_item['image_width']
 		room_design_model.image_height = room_design_item['image_height']
-		room_design_model.create_time = utils.get_utc_time()
-		room_design_model.image_name = "/" + PORJECT_NAME + "/" + room_design_model.create_time[0:10] + "/" + utils.get_md5(
-			room_design_model.create_time + room_design_model.html_url)
-
+		room_design_model.image_name = room_design_item['image_name']
 		return room_design_model
 
 	def save_to_database(self, room_design_model: RoomDesignModel):
