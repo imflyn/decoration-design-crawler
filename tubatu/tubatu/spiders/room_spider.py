@@ -42,7 +42,10 @@ class RoomSpider(CrawlSpider):
 
 	def parse_content(self, response):
 		selector = Selector(response)
-		img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
+		try:
+			img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
+		except:
+			img_url = selector.xpath('//img[@id="show_img"]/@src').extract()[0]
 		tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()
 
 		room_design_item = response.meta['item']  # type: RoomDesignItem

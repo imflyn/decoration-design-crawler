@@ -7,6 +7,8 @@
 import scrapy
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.utils.project import get_project_settings
+
+from msic.common import log
 from msic.common import utils
 from tubatu.service.room_design_service import RoomDesignService
 
@@ -36,7 +38,8 @@ class ImageCachePipeline(ImagesPipeline):
 		print(results)
 
 	def get_media_requests(self, item, info):
-		return scrapy.Request(item['image_url'], meta={'image_name': item['image_name']})
+		if 'image_url' in item:
+			return scrapy.Request(item['image_url'], meta={'image_name': item['image_name']})
 
 	def file_path(self, request, response=None, info=None):
 		image_name = request.meta['image_name']

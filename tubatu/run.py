@@ -1,3 +1,10 @@
+import sys
+import os
+from os.path import dirname
+
+path = dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(path)
+
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 

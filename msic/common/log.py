@@ -3,7 +3,7 @@ import logging
 logger = logging.getLogger()
 fh = logging.FileHandler('../error.log')
 fh.setLevel(logging.ERROR)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s /n')
 fh.setFormatter(formatter)
 
 logger.addHandler(fh)

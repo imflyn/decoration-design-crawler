@@ -28,7 +28,8 @@ def get_configure_content(file_path: str, section: str, option: str) -> str:
 
 
 def make_dirs(path: str):
-	os.makedirs(path, exist_ok=True)
+	if not os.path.exists(path):
+		os.makedirs(path, exist_ok=True)
 
 
 if __name__ == '__main__':

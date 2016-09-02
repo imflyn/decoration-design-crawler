@@ -96,4 +96,4 @@ ITEM_PIPELINES = {
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 AJAXCRAWL_ENABLED = True
-IMAGES_STORE = '/scrapy'
+IMAGES_STORE = 'D:/scrapy'
