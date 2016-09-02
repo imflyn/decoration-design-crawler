@@ -15,6 +15,7 @@ HEADERS = {
 	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
 URL = 'http://www.xicidaili.com/nn'
+INTERVAL = 30
 
 IP_LIST = proxy.FREE_PROXIES
 
@@ -54,14 +55,32 @@ class ProxyCrawler(object):
 	@staticmethod
 	def write_ip(ip_list: {}):
 		for ip in ip_list:
-			IP_LIST.append({"ip_port": ip})
+			if ProxyCrawler.check_proxy(ip):
+				IP_LIST.append({"ip_port": ip})
+				print(" SUCCESS %s" % ip)
+			else:
+				print(" FAILED %s" % ip)
+
+	@staticmethod
+	def check_proxy(ip: str, url: str = 'http://www.baidu.com') -> bool:
+		proxies = {"http": ip}
+		header = HEADERS
+		try:
+			req = requests.get(url, proxies=proxies, timeout=20, headers=header)
+			if req.status_code == requests.codes.ok:
+				return True
+			else:
+				return False
+		except Exception as e:
+			return False
 
 	def run(self):
 		print("reload proxy")
 		content = self.get_content(URL)
 		ip_list = self.parse_content(content)
-		print(ip_list)
+		print("ip :%s" % ip_list)
 		self.write_ip(ip_list)
+		print("ip proxy:%s" % IP_LIST)
 
 
 def start():
@@ -69,7 +88,7 @@ def start():
 		crawler = ProxyCrawler()
 		crawler.run()
 		schedule = Scheduler()
-		schedule.every(10).minutes.do(crawler.run)
+		schedule.every(INTERVAL).minutes.do(crawler.run)
 		while True:
 			schedule.run_pending()
 			time.sleep(1)
