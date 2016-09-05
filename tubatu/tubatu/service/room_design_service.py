@@ -41,8 +41,9 @@ class RoomDesignService(object):
 	def insert_to_redis(self, value: str):
 		self.redis_bloom_filter.insert(value, TABLE_NAME)
 
-	def handle_item(self, room_design_item: RoomDesignItem) -> RoomDesignModel:
+	def handle_item(self, room_design_item: RoomDesignItem):
 		room_design_model = self.get_model(room_design_item)
+		if self.is_duplicate_url(room_design_model.html_url):
+			return
 		self.save_to_database(room_design_model)
 		self.insert_to_redis(room_design_model.html_url)
-		return room_design_model

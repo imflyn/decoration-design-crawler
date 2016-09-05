@@ -15,8 +15,8 @@ HEADERS = {
 	'Content-Encoding': 'gzip',
 	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-URL = 'http://www.xicidaili.com/nn'
-INTERVAL = 30
+URL = 'http://www.xicidaili.com'
+INTERVAL = 60
 IP_LIST = proxy.FREE_PROXIES
 
 
@@ -34,7 +34,7 @@ class ProxyCrawler(object):
 		ip = []
 		soup = BeautifulSoup(content, 'html.parser')
 		ip_list = soup.find('table', id='ip_list')
-		ip_tr_list = ip_list.find_all('tr', limit=99)
+		ip_tr_list = ip_list.find_all('tr', limit=22)
 		for index, ip_tr in enumerate(ip_tr_list):
 			if index < 2:
 				continue
@@ -75,9 +75,9 @@ class ProxyCrawler(object):
 			real_ip = ip['ip_port']
 			if not ProxyCrawler.check_proxy(real_ip, url):
 				IP_LIST.remove(ip)
-				log.info('check ip %s FAILED' % ip)
+				print('check ip %s FAILED' % ip)
 			else:
-				log.info('check ip %s SUCCESS' % ip)
+				print('check ip %s SUCCESS' % ip)
 
 	def run(self):
 		print("reload proxy")

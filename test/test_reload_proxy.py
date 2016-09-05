@@ -9,4 +9,4 @@ if __name__ == '__main__':
 	# proxy_crawler.write_ip({'120.25.105.45', '123.56.218.131', '118.165.114.130'})
 	# print(IP_LIST)
 
-	reload_proxy.start('http://www.163.com')
+	reload_proxy.start('http://www.baidu.com')
