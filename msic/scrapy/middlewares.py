@@ -9,7 +9,7 @@ from msic.common import log, agents, proxy
 
 class CustomHttpProxyMiddleware(object):
 	def process_request(self, request, spider):
-		if self.use_proxy(request):
+		if self.use_proxy(request) and len(proxy.FREE_PROXIES) > 0:
 			p = random.choice(proxy.FREE_PROXIES)
 			try:
 				request.meta['proxy'] = "http://%s" % p['ip_port']

@@ -7,6 +7,7 @@ from requests.adapters import HTTPAdapter
 from schedule import Scheduler
 
 from msic.common import proxy
+from msic.common import log
 
 HEADERS = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36',
@@ -16,7 +17,6 @@ HEADERS = {
 
 URL = 'http://www.xicidaili.com/nn'
 INTERVAL = 30
-
 IP_LIST = proxy.FREE_PROXIES
 
 
@@ -54,15 +54,7 @@ class ProxyCrawler(object):
 
 	@staticmethod
 	def write_ip(ip_list: {}):
-		temp_ip_list = []
 		for ip in ip_list:
-			if ProxyCrawler.check_proxy(ip):
-				temp_ip_list.append({"ip_port": ip})
-				print(" SUCCESS %s" % ip)
-			else:
-				print(" FAILED %s" % ip)
-		del IP_LIST[:]
-		for ip in temp_ip_list:
 			IP_LIST.append({"ip_port": ip})
 
 	@staticmethod
@@ -78,6 +70,15 @@ class ProxyCrawler(object):
 		except Exception as e:
 			return False
 
+	def check_ip_availability(self, url: str = 'http://www.baidu.com'):
+		for ip in IP_LIST:
+			real_ip = ip['ip_port']
+			if not ProxyCrawler.check_proxy(real_ip, url):
+				IP_LIST.remove(ip)
+				log.info('check ip %s FAILED' % ip)
+			else:
+				log.info('check ip %s SUCCESS' % ip)
+
 	def run(self):
 		print("reload proxy")
 		content = self.get_content(URL)
@@ -87,19 +88,17 @@ class ProxyCrawler(object):
 		print("ip proxy:%s" % IP_LIST)
 
 
-def start():
+def start(url: str):
 	def task():
 		crawler = ProxyCrawler()
-		crawler.run()
 		schedule = Scheduler()
 		schedule.every(INTERVAL).minutes.do(crawler.run)
-		while True:
-			schedule.run_pending()
-			time.sleep(1)
+
+		def check_ip_availability():
+			crawler.check_ip_availability(url)
+
+		schedule.every(INTERVAL).minutes.do(check_ip_availability)
+		schedule.run_all()
 
 	thread = threading.Thread(target=task)
 	thread.start()
-
-
-if __name__ == '__main__':
-	start()

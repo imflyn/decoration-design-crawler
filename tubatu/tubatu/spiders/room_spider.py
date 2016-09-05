@@ -43,7 +43,7 @@ class RoomSpider(CrawlSpider):
 				)
 				yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
 			else:
-				log.warn("filter url: %s" % next_url)
+				log.info("filter url: %s" % next_url)
 
 	def parse_content(self, response):
 		selector = Selector(response)
