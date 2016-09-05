@@ -54,12 +54,16 @@ class ProxyCrawler(object):
 
 	@staticmethod
 	def write_ip(ip_list: {}):
+		temp_ip_list = []
 		for ip in ip_list:
 			if ProxyCrawler.check_proxy(ip):
-				IP_LIST.append({"ip_port": ip})
+				temp_ip_list.append({"ip_port": ip})
 				print(" SUCCESS %s" % ip)
 			else:
 				print(" FAILED %s" % ip)
+		del IP_LIST[:]
+		for ip in temp_ip_list:
+			IP_LIST.append({"ip_port": ip})
 
 	@staticmethod
 	def check_proxy(ip: str, url: str = 'http://www.baidu.com') -> bool:
