@@ -1,4 +1,5 @@
-a = [1, 2, 3]
-b = a
-del a[:]
-print(a)
+li = [' ', '     ', '', 'a']
+for s in li[:]:
+	if s.strip() == '':
+		li.remove(s)
+print(li)

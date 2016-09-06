@@ -16,7 +16,7 @@ HEADERS = {
 	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
 URL = 'http://www.xicidaili.com'
-INTERVAL = 60
+INTERVAL = 30
 IP_LIST = proxy.FREE_PROXIES
 
 

@@ -28,6 +28,10 @@ class CustomImagesPipeline(ImagesPipeline):
 		'big': (500, 500)
 	}
 
+	def __init__(self, store_uri, download_func=None, settings=None):
+		super(CustomImagesPipeline, self).__init__(store_uri, settings=settings, download_func=download_func)
+		self.store_uri = get_project_settings()['IMAGES_STORE']
+
 	def get_media_requests(self, item, info):
 		if 'image_url' in item:
 			return scrapy.Request(item['image_url'], meta={'image_name': item['image_name']})
@@ -36,8 +40,7 @@ class CustomImagesPipeline(ImagesPipeline):
 		image_name = request.meta['image_name']
 		file_path = self.get_file_name(image_name)
 		dir_name = file_path[0:file_path.rfind("/")]
-		store_uri = get_project_settings()['IMAGES_STORE']
-		utils.make_dirs(store_uri + dir_name)
+		utils.make_dirs(self.store_uri + dir_name)
 		path = '%s_original.jpg' % file_path
 		return path
 
@@ -45,8 +48,7 @@ class CustomImagesPipeline(ImagesPipeline):
 		image_name = request.meta['image_name']
 		file_path = self.get_file_name(image_name)
 		dir_name = file_path[0:file_path.rfind("/")]
-		store_uri = get_project_settings()['IMAGES_STORE']
-		utils.make_dirs(store_uri + dir_name)
+		utils.make_dirs(self.store_uri + dir_name)
 		path = '%s_thumb.jpg' % file_path
 		return path
 

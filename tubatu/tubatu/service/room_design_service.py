@@ -21,6 +21,9 @@ class RoomDesignService(object):
 		room_design_model._id = utils.get_uuid()
 		room_design_model.title = room_design_item['title']
 		room_design_model.html_url = room_design_item['html_url']
+		for tag in room_design_item['tags'][:]:
+			if tag.strip() == '':
+				room_design_item['tags'].remove(tag)
 		room_design_model.tags = room_design_item['tags']
 		room_design_model.description = room_design_item['description']
 		room_design_model.image_url = room_design_item['image_url']
@@ -47,3 +50,13 @@ class RoomDesignService(object):
 			return
 		self.save_to_database(room_design_model)
 		self.insert_to_redis(room_design_model.html_url)
+		
+		log.info("=========================================================================================")
+		log.info("title:" + room_design_item['title'])
+		log.info("original_width:" + room_design_item['image_width'])
+		log.info("original_height:" + room_design_item['image_height'])
+		log.info("html_url:" + room_design_item['html_url'])
+		log.info("image_url:" + room_design_item['image_url'])
+		log.info("description:" + room_design_item['description'])
+		log.info("tags:%s" % ','.join(map(str, room_design_item['tags'])))
+		log.info("=========================================================================================")
