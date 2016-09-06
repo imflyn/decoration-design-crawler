@@ -48,7 +48,7 @@ class JavaScriptMiddleware(object):
 			return HtmlResponse(self.driver.current_url, body=body, encoding='utf-8', request=request)
 
 	def spider_opened(self, spider):
-		self.driver = webdriver.PhantomJS()
+		self.driver = webdriver.PhantomJS(service_args=["--webdriver-loglevel=ERROR"])
 
 	def spider_closed(self, spider):
 		self.driver.quit()

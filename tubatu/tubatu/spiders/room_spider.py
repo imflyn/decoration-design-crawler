@@ -42,8 +42,8 @@ class RoomSpider(CrawlSpider):
 					image_height=original_height,
 				)
 				yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
-			else:
-				log.info("filter url: %s" % next_url)
+			# else:
+			# log.info("filter url: %s" % next_url)
 
 	def parse_content(self, response):
 		selector = Selector(response)
@@ -57,15 +57,4 @@ class RoomSpider(CrawlSpider):
 		room_design_item['image_url'] = img_url
 		room_design_item['tags'] = tags
 		room_design_item['description'] = room_design_item['title']
-
-		log.info("=========================================================================================")
-		log.info("title:" + room_design_item['title'])
-		log.info("original_width:" + room_design_item['image_width'])
-		log.info("original_height:" + room_design_item['image_height'])
-		log.info("html_url:" + room_design_item['html_url'])
-		log.info("image_url:" + room_design_item['image_url'])
-		log.info("description:" + room_design_item['description'])
-		log.info("tags:%s" % ','.join(map(str, room_design_item['tags'])))
-		log.info("=========================================================================================")
-
 		return room_design_item
