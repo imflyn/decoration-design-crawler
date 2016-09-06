@@ -43,18 +43,17 @@ class RoomSpider(CrawlSpider):
 				)
 				yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
 			# else:
-			# log.info("filter url: %s" % next_url)
+			# 	log.info("filter url: %s" % next_url)
 
 	def parse_content(self, response):
 		selector = Selector(response)
 		try:
 			img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
-		except:
-			img_url = selector.xpath('//img[@id="show_img"]/@src').extract()[0]
-		tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()
-
-		room_design_item = response.meta['item']  # type: RoomDesignItem
-		room_design_item['image_url'] = img_url
-		room_design_item['tags'] = tags
-		room_design_item['description'] = room_design_item['title']
-		return room_design_item
+			tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()
+			room_design_item = response.meta['item']  # type: RoomDesignItem
+			room_design_item['image_url'] = img_url
+			room_design_item['tags'] = tags
+			room_design_item['description'] = room_design_item['title']
+			return room_design_item
+		except Exception as e:
+			pass

@@ -12,7 +12,7 @@ from msic.scrapy import reload_proxy
 from tubatu.spiders.room_spider import RoomSpider
 
 # "http://xiaoguotu.to8to.com/robots.txt"
-reload_proxy.start('http://xiaoguotu.to8to.com/robots.txt')
+reload_proxy.start('http://www.baidu.com')
 
 # runner = CrawlerRunner(get_project_settings())
 #
