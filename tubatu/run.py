@@ -8,11 +8,11 @@ sys.path.append(path)
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from msic.scrapy import reload_proxy
+from msic.scrapy import ip_pool
 from tubatu.spiders.room_spider import RoomSpider
 
 # "http://xiaoguotu.to8to.com/robots.txt"
-reload_proxy.start('http://www.baidu.com')
+ip_pool.start('http://www.baidu.com')
 
 # runner = CrawlerRunner(get_project_settings())
 #

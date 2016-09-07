@@ -1,4 +1,8 @@
-from msic.scrapy import reload_proxy
+from msic.scrapy import ip_pool
 
 if __name__ == '__main__':
-	reload_proxy.start('http://www.baidu.com')
+	ip_pool.IP_LIST = [
+		{"ip_port": "127.0.0.1:1080"},
+		{"ip_port": "127.0.0.1:1080"},
+		{"ip_port": "127.0.0.1:1080"}, ]
+	ip_pool.delete_ip('127.0.0.1:1080')

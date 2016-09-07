@@ -50,6 +50,7 @@ class JavaScriptMiddleware(object):
 	def spider_opened(self, spider):
 		service_args = ["--webdriver-loglevel=ERROR"]
 		self.driver = webdriver.PhantomJS(service_args=service_args)
+		self.driver.set_page_load_timeout(60)
 
 	def spider_closed(self, spider):
 		self.driver.quit()

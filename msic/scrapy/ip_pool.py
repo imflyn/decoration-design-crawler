@@ -15,8 +15,8 @@ HEADERS = {
 	'Content-Encoding': 'gzip',
 	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-URL = 'http://www.xicidaili.com/nn'
-INTERVAL = 10
+URL = 'http://www.xicidaili.com'
+INTERVAL = 1
 IP_LIST = proxy.FREE_PROXIES
 
 
@@ -99,10 +99,10 @@ def start(url: str):
 		schedule = Scheduler()
 		schedule.every(INTERVAL).minutes.do(crawler.run)
 
-		def check_ip_availability():
-			crawler.check_ip_availability(url)
-
-		schedule.every(INTERVAL).minutes.do(check_ip_availability)
+		# def check_ip_availability():
+		# 	crawler.check_ip_availability(url)
+		#
+		# schedule.every(INTERVAL).minutes.do(check_ip_availability)
 		schedule.run_all()
 
 	thread = threading.Thread(target=task)
