@@ -15,7 +15,7 @@ HEADERS = {
 	'Content-Encoding': 'gzip',
 	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
-URL = 'http://www.xicidaili.com'
+URL = 'http://www.xicidaili.com/nn'
 INTERVAL = 20
 IP_LIST = proxy.FREE_PROXIES
 
@@ -24,8 +24,8 @@ class ProxyCrawler(object):
 	@staticmethod
 	def get_content(url: str) -> str:
 		session = requests.Session()
-		session.mount('https://', HTTPAdapter(max_retries=10))
-		session.mount('http://', HTTPAdapter(max_retries=10))
+		session.mount('https://', HTTPAdapter(max_retries=5))
+		session.mount('http://', HTTPAdapter(max_retries=5))
 		response = session.get(url, headers=HEADERS)
 		return response.text
 
@@ -34,22 +34,26 @@ class ProxyCrawler(object):
 		ip = []
 		soup = BeautifulSoup(content, 'html.parser')
 		ip_list = soup.find('table', id='ip_list')
-		ip_tr_list = ip_list.find_all('tr', limit=22)
+		ip_tr_list = ip_list.find_all('tr', limit=90)
 		for index, ip_tr in enumerate(ip_tr_list):
 			if index < 2:
 				continue
 			ip_td = ip_tr.find_all('td')
 			address = ''
 			port = ''
+			is_high_quality = True
 			for num, data in enumerate(ip_td):
 				if num == 1:
 					address = data.getText()
 				elif num == 2:
 					port = data.getText()
-				elif num > 2:
+				elif num == 6 or num == 7:
+					value = data.find('div', class_='bar').find('div').attrs['style']  # type:str
+					is_high_quality = is_high_quality and int(value.replace('width:', '').replace('%', '')) > 80
+				elif num > 7:
 					break
-
-			ip.append(address + ':' + port)
+			if is_high_quality:
+				ip.append(address + ':' + port)
 		return ip
 
 	@staticmethod
