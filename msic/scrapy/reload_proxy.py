@@ -58,6 +58,7 @@ class ProxyCrawler(object):
 
 	@staticmethod
 	def write_ip(ip_list: {}):
+		del IP_LIST[:]
 		for ip in ip_list:
 			IP_LIST.append({"ip_port": ip})
 
