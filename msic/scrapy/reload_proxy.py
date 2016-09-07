@@ -16,7 +16,7 @@ HEADERS = {
 	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
 URL = 'http://www.xicidaili.com/nn'
-INTERVAL = 20
+INTERVAL = 10
 IP_LIST = proxy.FREE_PROXIES
 
 
@@ -34,7 +34,7 @@ class ProxyCrawler(object):
 		ip = []
 		soup = BeautifulSoup(content, 'html.parser')
 		ip_list = soup.find('table', id='ip_list')
-		ip_tr_list = ip_list.find_all('tr', limit=90)
+		ip_tr_list = ip_list.find_all('tr', limit=20)
 		for index, ip_tr in enumerate(ip_tr_list):
 			if index < 2:
 				continue
@@ -47,9 +47,9 @@ class ProxyCrawler(object):
 					address = data.getText()
 				elif num == 2:
 					port = data.getText()
-				elif num == 6 or num == 7:
-					value = data.find('div', class_='bar').find('div').attrs['style']  # type:str
-					is_high_quality = is_high_quality and int(value.replace('width:', '').replace('%', '')) > 80
+				# elif num == 6 or num == 7:
+				# 	value = data.find('div', class_='bar').find('div').attrs['style']  # type:str
+				# 	is_high_quality = is_high_quality and int(value.replace('width:', '').replace('%', '')) > 80
 				elif num > 7:
 					break
 			if is_high_quality:

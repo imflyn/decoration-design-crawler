@@ -47,13 +47,10 @@ class RoomSpider(CrawlSpider):
 
 	def parse_content(self, response):
 		selector = Selector(response)
-		try:
-			img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
-			tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()
-			room_design_item = response.meta['item']  # type: RoomDesignItem
-			room_design_item['image_url'] = img_url
-			room_design_item['tags'] = tags
-			room_design_item['description'] = room_design_item['title']
-			return room_design_item
-		except Exception as e:
-			pass
+		img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
+		tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()
+		room_design_item = response.meta['item']  # type: RoomDesignItem
+		room_design_item['image_url'] = img_url
+		room_design_item['tags'] = tags
+		room_design_item['description'] = room_design_item['title']
+		return room_design_item

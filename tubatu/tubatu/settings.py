@@ -24,7 +24,7 @@ NEWSPIDER_MODULE = 'tubatu.spiders'
 # USER_AGENT = 'tubatu (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 CONCURRENT_REQUESTS = 24
@@ -96,11 +96,13 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
+
+
 AJAXCRAWL_ENABLED = True
 IMAGES_STORE = 'D:/scrapy'
 
 LOG_ENABLED = True
 LOG_FORMAT = '%(asctime)s,%(msecs)d  [%(name)s] %(levelname)s: %(message)s'
 
-MEMDEBUG_ENABLED = True
-MEMDEBUG_NOTIFY = ['imflyn@163.com']
+# MEMDEBUG_ENABLED = True
+# MEMDEBUG_NOTIFY = ['imflyn@163.com']
