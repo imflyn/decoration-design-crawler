@@ -56,4 +56,4 @@ class RoomSpider(CrawlSpider):
 			room_design_item['description'] = room_design_item['title']
 			return room_design_item
 		except Exception as e:
-			log.warn(e)
+			log.warn("%s ( refer: %s )" % (e, response.meta['item']['html_url']))

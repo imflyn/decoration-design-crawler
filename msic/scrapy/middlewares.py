@@ -18,7 +18,7 @@ def get_random_proxy():
 class CustomHttpProxyMiddleware(object):
 	def process_request(self, request, spider):
 		try:
-			request.meta['proxy'] = "http://%s" % get_random_proxy()['ip_port']
+			request.meta['proxy'] = "http://%s" % get_random_proxy()
 		except Exception as e:
 			log.error(e)
 
@@ -40,7 +40,7 @@ class JavaScriptMiddleware(object):
 	def process_request(self, request, spider):
 		if 'javascript' in request.meta and request.meta['javascript'] is True:
 			self.driver.service.service_args = [
-				'--proxy=' + get_random_proxy()['ip_port'],
+				'--proxy=' + get_random_proxy(),
 				'--proxy-type=http',
 				"--webdriver-loglevel=ERROR"
 			]

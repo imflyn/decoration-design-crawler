@@ -6,8 +6,6 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from schedule import Scheduler
 
-from msic.common import log
-
 HEADERS = {
 	'User-Agent': 'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/38.0.2125.122 Safari/537.36',
 	'Connection': 'keep-alive',
@@ -59,7 +57,7 @@ class ProxyCrawler(object):
 	def write_ip(ip_list: {}):
 		del IP_LIST[:]
 		for ip in ip_list:
-			IP_LIST.append({"ip_port": ip})
+			IP_LIST.append(ip)
 
 	@staticmethod
 	def check_proxy(ip: str, url: str = 'http://www.baidu.com') -> bool:
@@ -76,8 +74,7 @@ class ProxyCrawler(object):
 
 	def check_ip_availability(self, url: str = 'http://www.baidu.com'):
 		for ip in IP_LIST:
-			real_ip = ip['ip_port']
-			if not ProxyCrawler.check_proxy(real_ip, url):
+			if not ProxyCrawler.check_proxy(ip, url):
 				IP_LIST.remove(ip)
 				print('check ip %s FAILED' % ip)
 			else:
