@@ -6,7 +6,6 @@ from bs4 import BeautifulSoup
 from requests.adapters import HTTPAdapter
 from schedule import Scheduler
 
-from msic.common import proxy
 from msic.common import log
 
 HEADERS = {
@@ -16,8 +15,8 @@ HEADERS = {
 	'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'}
 
 URL = 'http://www.xicidaili.com'
-INTERVAL = 1
-IP_LIST = proxy.FREE_PROXIES
+INTERVAL = 2
+IP_LIST = []
 
 
 class ProxyCrawler(object):
@@ -93,17 +92,19 @@ class ProxyCrawler(object):
 		print("ip proxy:%s" % IP_LIST)
 
 
-def start(url: str):
+def start():
 	def task():
 		crawler = ProxyCrawler()
 		schedule = Scheduler()
-		schedule.every(INTERVAL).minutes.do(crawler.run)
 
-		# def check_ip_availability():
-		# 	crawler.check_ip_availability(url)
-		#
-		# schedule.every(INTERVAL).minutes.do(check_ip_availability)
-		schedule.run_all()
+		schedule.every(INTERVAL).minutes.do(crawler.run)
+		schedule.every(INTERVAL).minutes.do(crawler.check_ip_availability)
+
+		crawler.run()
+		crawler.check_ip_availability()
+		while True:
+			schedule.run_pending()
+			time.sleep(1)
 
 	thread = threading.Thread(target=task)
 	thread.start()

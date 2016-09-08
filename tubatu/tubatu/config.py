@@ -4,9 +4,11 @@ import redis
 
 from msic.core.service import mongodb_service
 
-from selenium.webdriver.remote.remote_connection import LOGGER
+from selenium.webdriver.remote.remote_connection import LOGGER as selenium_log
+from requests.packages.urllib3.connectionpool import log as requests_log
 
-LOGGER.setLevel(logging.WARNING)
+selenium_log.setLevel(logging.WARNING)
+requests_log.setLevel(logging.WARNING)
 
 SECTION_DATABASE = "database"
 MONGODB_HOST = "127.0.0.1"

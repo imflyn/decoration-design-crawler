@@ -5,12 +5,13 @@ from scrapy import signals
 from scrapy.http import HtmlResponse
 from selenium import webdriver
 
-from msic.common import log, agents, proxy
+from msic.common import log, agents
+from msic.scrapy import ip_pool
 
 
 def get_random_proxy():
-	if len(proxy.FREE_PROXIES) > 0:
-		ip = random.choice(proxy.FREE_PROXIES)
+	if len(ip_pool.IP_LIST) > 0:
+		ip = random.choice(ip_pool.IP_LIST)
 		return ip
 
 
