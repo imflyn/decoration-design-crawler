@@ -1,4 +1,3 @@
-import redis
 from redis import StrictRedis
 
 

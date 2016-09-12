@@ -1,5 +1,5 @@
-import sys
 import os
+import sys
 from os.path import dirname
 
 path = dirname(os.path.abspath(os.path.dirname(__file__)))

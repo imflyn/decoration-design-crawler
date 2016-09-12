@@ -1,4 +1,5 @@
-import logging, sys
+import logging
+import sys
 from os.path import dirname
 
 SAVE_PATH = dirname(dirname(dirname(__file__)))

@@ -1,11 +1,10 @@
 import logging
 
 import redis
+from requests.packages.urllib3.connectionpool import log as requests_log
+from selenium.webdriver.remote.remote_connection import LOGGER as selenium_log
 
 from msic.core.service import mongodb_service
-
-from selenium.webdriver.remote.remote_connection import LOGGER as selenium_log
-from requests.packages.urllib3.connectionpool import log as requests_log
 
 selenium_log.setLevel(logging.WARNING)
 requests_log.setLevel(logging.WARNING)

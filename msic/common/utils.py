@@ -1,8 +1,8 @@
-import uuid
+import configparser
 import datetime
 import hashlib
-import configparser
 import os
+import uuid
 
 
 # 2a47d8b6-6f5b-11e6-ac9d-64006a0b51ab

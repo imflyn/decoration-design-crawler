@@ -7,8 +7,9 @@
 import scrapy
 from scrapy.pipelines.images import ImagesPipeline
 from scrapy.utils.project import get_project_settings
-from tubatu.constants import PORJECT_NAME
+
 from msic.common import utils
+from tubatu.constants import PORJECT_NAME
 from tubatu.service.room_design_service import RoomDesignService
 
 

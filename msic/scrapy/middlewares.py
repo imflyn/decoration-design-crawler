@@ -1,6 +1,5 @@
 import random
 
-import time
 from scrapy import signals
 from scrapy.http import HtmlResponse
 from selenium import webdriver

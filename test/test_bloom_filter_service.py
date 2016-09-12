@@ -1,5 +1,6 @@
-from msic.core.service.bloom_filter_service import RedisBloomFilter
 import redis
+
+from msic.core.service.bloom_filter_service import RedisBloomFilter
 
 REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379

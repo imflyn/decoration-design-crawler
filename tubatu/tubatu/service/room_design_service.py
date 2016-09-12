@@ -1,11 +1,10 @@
 from msic.common import log
 from msic.common import utils
+from msic.core.service import mongodb_service
 from msic.core.service.bloom_filter_service import RedisBloomFilter
 from tubatu import config
-
 from tubatu.items import RoomDesignItem
 from tubatu.model.room_design import RoomDesignModel
-from msic.core.service import mongodb_service
 
 TABLE_NAME = "room_design"
 

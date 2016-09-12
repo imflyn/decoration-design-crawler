@@ -8,8 +8,8 @@
 #     http://doc.scrapy.org/en/latest/topics/settings.html
 #     http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #     http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
-import sys
 import os
+import sys
 from os.path import dirname
 
 path = dirname(dirname(os.path.abspath(os.path.dirname(__file__))))

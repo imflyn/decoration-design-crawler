@@ -3,9 +3,9 @@ from scrapy.linkextractors import LinkExtractor
 from scrapy.selector import Selector
 from scrapy.spiders import CrawlSpider, Rule
 
-from tubatu.service.room_design_service import RoomDesignService
 from msic.common import constant, log
 from tubatu.items import RoomDesignItem
+from tubatu.service.room_design_service import RoomDesignService
 
 
 class RoomSpider(CrawlSpider):

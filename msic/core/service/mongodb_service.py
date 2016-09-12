@@ -1,6 +1,6 @@
 from pymongo import MongoClient, errors
-from pymongo.database import Database
 from pymongo.collection import Collection
+from pymongo.database import Database
 
 from msic.common import log
 
