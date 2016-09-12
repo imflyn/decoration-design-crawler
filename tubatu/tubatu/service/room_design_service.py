@@ -3,7 +3,6 @@ from msic.common import utils
 from msic.core.service.bloom_filter_service import RedisBloomFilter
 from tubatu import config
 
-from tubatu.constants import PORJECT_NAME
 from tubatu.items import RoomDesignItem
 from tubatu.model.room_design import RoomDesignModel
 from msic.core.service import mongodb_service
@@ -50,7 +49,7 @@ class RoomDesignService(object):
 			return
 		self.save_to_database(room_design_model)
 		self.insert_to_redis(room_design_model.html_url)
-		
+
 		log.info("=========================================================================================")
 		log.info("title:" + room_design_item['title'])
 		log.info("original_width:" + room_design_item['image_width'])

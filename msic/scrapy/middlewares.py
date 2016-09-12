@@ -39,17 +39,14 @@ class JavaScriptMiddleware(object):
 
 	def process_request(self, request, spider):
 		if 'javascript' in request.meta and request.meta['javascript'] is True:
-			self.driver.service.service_args = [
-				'--proxy=' + get_random_proxy(),
-				'--proxy-type=http',
-				"--webdriver-loglevel=ERROR"
-			]
 			self.driver.get(request.url)
 			body = self.driver.page_source
 			return HtmlResponse(self.driver.current_url, body=body, encoding='utf-8', request=request)
 
 	def spider_opened(self, spider):
-		service_args = ["--webdriver-loglevel=ERROR"]
+		service_args = [
+			"--webdriver-loglevel=ERROR"
+		]
 		self.driver = webdriver.PhantomJS(service_args=service_args)
 		self.driver.set_page_load_timeout(60)
 
