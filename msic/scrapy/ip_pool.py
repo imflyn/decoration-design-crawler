@@ -72,7 +72,7 @@ class ProxyCrawler(object):
 		except Exception as e:
 			return False
 
-	def check_ip_availability(self, url: str = 'http://www.baidu.com'):
+	def check_ip_availability(self, url: str = 'http://lwons.com/wx'):
 		for ip in IP_LIST:
 			if not ProxyCrawler.check_proxy(ip, url):
 				IP_LIST.remove(ip)

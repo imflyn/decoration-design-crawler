@@ -59,8 +59,8 @@ COOKIES_ENABLED = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
+	'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 1,
 	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 401,
-	'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 402,
 	'msic.scrapy.middlewares.JavaScriptMiddleware': 403,
 }
 
@@ -98,7 +98,7 @@ ITEM_PIPELINES = {
 
 
 
-AJAXCRAWL_ENABLED = True
+AJAXCRAWL_ENABLED = False
 IMAGES_STORE = 'D:/scrapy'
 
 LOG_ENABLED = True
