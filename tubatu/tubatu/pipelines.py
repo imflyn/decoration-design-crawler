@@ -69,4 +69,3 @@ class RoomImagePipeline(CustomImagesPipeline):
 	def item_completed(self, results, item, info):
 		if True in results[0]:
 			self.room_design_service.handle_item(item)
-		print(results)
