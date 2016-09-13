@@ -1,18 +1,19 @@
 from msic.common import log
 from msic.common import utils
+from msic.config import redis_client
 from msic.core.service import mongodb_service
 from msic.core.service.bloom_filter_service import RedisBloomFilter
 from tubatu import config
 from tubatu.items import RoomDesignItem
 from tubatu.model.room_design import RoomDesignModel
 
-TABLE_NAME = "room_design"
+REDIS_KEY = "tubatu_room_design_filter"
 
 
 class RoomDesignService(object):
 	def __init__(self):
-		self.collection = mongodb_service.get_collection(config.mongodb, TABLE_NAME)
-		self.redis_bloom_filter = RedisBloomFilter(config.redis_client)
+		self.collection = mongodb_service.get_collection(config.mongodb, REDIS_KEY)
+		self.redis_bloom_filter = RedisBloomFilter(redis_client)
 
 	def get_model(self, room_design_item: RoomDesignItem) -> RoomDesignModel:
 		room_design_model = RoomDesignModel()
@@ -37,10 +38,10 @@ class RoomDesignService(object):
 			log.error(e)
 
 	def is_duplicate_url(self, value: str) -> bool:
-		return self.redis_bloom_filter.is_contains(value, TABLE_NAME)
+		return self.redis_bloom_filter.is_contains(value, REDIS_KEY)
 
 	def insert_to_redis(self, value: str):
-		self.redis_bloom_filter.insert(value, TABLE_NAME)
+		self.redis_bloom_filter.insert(value, REDIS_KEY)
 
 	def handle_item(self, room_design_item: RoomDesignItem):
 		room_design_model = self.get_model(room_design_item)

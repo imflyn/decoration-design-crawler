@@ -1,5 +1,6 @@
 import threading
 import time
+from datetime import datetime
 
 import pymongo
 from schedule import Scheduler
@@ -13,11 +14,14 @@ TASK_INTERVAL = 60
 FAILED_COUNT_BORDER = 10
 MIN_PROXY_COUNT = 20
 
+REDIS_KEY_LAST_CHECK_IP_TIME = "last_check_ip_time"
+
 
 class ProxyPool(object):
 	TABLE_NAME = 'proxy_pool'
 
 	def __init__(self):
+		self.redis_client = config.redis_client
 		self.collection = mongodb_service.get_collection(config.mongodb, self.TABLE_NAME)
 		self.collection.create_index([('ip', pymongo.ASCENDING)], unique=True, sparse=True)
 
@@ -69,6 +73,12 @@ class ProxyPool(object):
 		utils.log("保存结束")
 
 	def check_ip_availability_task(self):
+		last_check_time = self.redis_client.get(REDIS_KEY_LAST_CHECK_IP_TIME)
+		now_time = datetime.utcnow().timestamp()
+		if last_check_time is not None and (now_time - float(last_check_time)) < (TASK_INTERVAL * 60):
+			return
+		self.redis_client.set(REDIS_KEY_LAST_CHECK_IP_TIME, now_time)
+
 		proxy_list = self.collection.find()
 		for proxy in proxy_list:
 			ip = proxy['ip']
@@ -91,13 +101,12 @@ class ProxyPool(object):
 				utils.log('Check ip %s SUCCESS' % ip)
 
 	def start(self):
-		self.collection.drop()
 		self.crawl_proxy_task(False)
 
 		def task():
 			self.check_ip_availability_task()
 			schedule = Scheduler()
-			schedule.every(TASK_INTERVAL).minutes.do(self.check_ip_availability_task)
+			schedule.every(10).minutes.do(self.check_ip_availability_task)
 
 			while True:
 				schedule.run_pending()
