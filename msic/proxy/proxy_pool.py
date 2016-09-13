@@ -46,13 +46,11 @@ class ProxyPool(object):
 			if failed_count <= FAILED_COUNT_BORDER:
 				try:
 					self.collection.update_one({'ip': ip}, {"$set": {'update_time': utils.get_utc_time(), 'failed_count': failed_count}})
-					utils.log("ip: %s 更新数据库失败次数" % ip)
 				except:
 					pass
 			else:
 				try:
 					self.collection.delete_one({'ip': ip})
-					utils.log("ip: %s 从数据库中删除" % ip)
 				except:
 					pass
 		self.crawl_proxy_task()
@@ -61,7 +59,6 @@ class ProxyPool(object):
 		if check_num:
 			count = self.collection.count()
 			if count > MIN_PROXY_COUNT:
-				utils.log("代理数大于%d不用获取新的ip" % MIN_PROXY_COUNT)
 				return
 		utils.log("开始抓取代理")
 		proxy_list = proxy_strategy.crawl_proxy()
