@@ -7,12 +7,13 @@ from tubatu import config
 from tubatu.items import RoomDesignItem
 from tubatu.model.room_design import RoomDesignModel
 
+TABLE_NAME = "room_design"
 REDIS_KEY = "tubatu_room_design_filter"
 
 
 class RoomDesignService(object):
 	def __init__(self):
-		self.collection = mongodb_service.get_collection(config.mongodb, REDIS_KEY)
+		self.collection = mongodb_service.get_collection(config.mongodb, TABLE_NAME)
 		self.redis_bloom_filter = RedisBloomFilter(redis_client)
 
 	def get_model(self, room_design_item: RoomDesignItem) -> RoomDesignModel:
