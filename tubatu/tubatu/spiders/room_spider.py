@@ -1,9 +1,11 @@
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.selector import Selector
-from scrapy.spiders import CrawlSpider, Rule
+from scrapy.spiders import CrawlSpider
+from scrapy.spiders import Rule
 
 from msic.common import constant, log
+from msic.proxy.proxy_pool import proxy_pool
 from tubatu.items import RoomDesignItem
 from tubatu.service.room_design_service import RoomDesignService
 
@@ -57,3 +59,4 @@ class RoomSpider(CrawlSpider):
 			return room_design_item
 		except Exception as e:
 			log.warn("%s ( refer: %s )" % (e, response.meta['item']['html_url']))
+			proxy_pool.add_failed_time(response.meta['proxy'].replace('http://', ''))

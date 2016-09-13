@@ -1,8 +1,13 @@
-import configparser
 import datetime
 import hashlib
 import os
 import uuid
+
+import requests
+from requests import Response
+from requests.adapters import HTTPAdapter
+
+from msic.common.constant import HEADERS
 
 
 # 2a47d8b6-6f5b-11e6-ac9d-64006a0b51ab
@@ -21,19 +26,18 @@ def get_md5(content: str) -> str:
 	return md5.hexdigest()
 
 
-def get_configure_content(file_path: str, section: str, option: str) -> str:
-	parser = configparser.ConfigParser()
-	parser.read(file_path)
-	return parser.get(section, option)
-
-
 def make_dirs(path: str):
 	if not os.path.exists(path):
 		os.makedirs(path, exist_ok=True)
 
 
-if __name__ == '__main__':
-	print("uuid:" + get_uuid())
-	print("utc time:" + get_utc_time())
-	print("md5:" + get_md5(get_uuid()))
-	make_dirs("D:\\scrapy\\thumbs\\small")
+def http_request(url: str, timeout=30) -> Response:
+	session = requests.Session()
+	session.mount('https://', HTTPAdapter(max_retries=5))
+	session.mount('http://', HTTPAdapter(max_retries=5))
+	response = session.get(url, headers=HEADERS, timeout=timeout)
+	return response
+
+
+def log(content: str):
+	print("============================= %s ==========================" % (get_utc_time() + " " + content))

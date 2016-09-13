@@ -33,7 +33,7 @@ REACTOR_THREADPOOL_MAXSIZE = 12
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 0
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -60,8 +60,9 @@ COOKIES_ENABLED = False
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
 	'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 1,
-	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 401,
+	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 2,
 	'msic.scrapy.middlewares.JavaScriptMiddleware': 403,
+	'msic.scrapy.middlewares.CatchExceptionMiddleware': 999,
 }
 
 # Enable or disable extensions

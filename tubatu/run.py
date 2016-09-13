@@ -8,10 +8,10 @@ sys.path.append(path)
 from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 
-from msic.scrapy import ip_pool
+from msic.proxy.proxy_pool import proxy_pool
 from tubatu.spiders.room_spider import RoomSpider
 
-ip_pool.start()
+proxy_pool.start()
 
 process = CrawlerProcess(get_project_settings())
 process.crawl(RoomSpider())

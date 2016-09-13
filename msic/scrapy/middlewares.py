@@ -5,19 +5,23 @@ from scrapy.http import HtmlResponse
 from selenium import webdriver
 
 from msic.common import log, agents
-from msic.scrapy import ip_pool
+from msic.proxy.proxy_pool import proxy_pool
 
 
-def get_random_proxy():
-	if len(ip_pool.IP_LIST) > 0:
-		ip = random.choice(ip_pool.IP_LIST)
-		return ip
+class CatchExceptionMiddleware(object):
+	def process_response(self, request, response, spider):
+		if response.status <= 200 or response.status >= 400:
+			proxy_pool.add_failed_time(request.meta['proxy'].replace('http://', ''))
+		return response
+
+	def process_exception(self, request, exception, spider):
+		proxy_pool.add_failed_time(request.meta['proxy'].replace('http://', ''))
 
 
 class CustomHttpProxyMiddleware(object):
 	def process_request(self, request, spider):
 		try:
-			request.meta['proxy'] = "http://%s" % get_random_proxy()
+			request.meta['proxy'] = "http://%s" % proxy_pool.random_choice_proxy()
 		except Exception as e:
 			log.error(e)
 
