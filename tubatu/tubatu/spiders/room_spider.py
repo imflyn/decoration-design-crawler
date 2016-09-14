@@ -6,6 +6,7 @@ from scrapy.spiders import Rule
 
 from msic.common import constant, log
 from msic.proxy.proxy_pool import proxy_pool
+from msic.scrapy import middlewares
 from tubatu.items import RoomDesignItem
 from tubatu.service.room_design_service import RoomDesignService
 
@@ -43,15 +44,16 @@ class RoomSpider(CrawlSpider):
 					image_width=original_width,
 					image_height=original_height,
 				)
-				yield scrapy.Request(next_url, self.parse_content, meta={'item': room_design_item, 'javascript': True})
+				yield scrapy.Request(next_url, self.parse_content,
+				                     meta={'item': room_design_item, middlewares.JAVASCRIPT: True})
 			# else:
 			# 	log.info("filter url: %s" % next_url)
 
 	def parse_content(self, response):
 		selector = Selector(response)
 		try:
-			img_url = selector.xpath('//img[@id="bigImg"]/@src').extract()[0]
 			tags = selector.xpath('//div[@class="hot_tag xg_tag"]//text()').extract()
+			img_url = selector.xpath('//img[@id="show_img"]/@src').extract()[0]
 			room_design_item = response.meta['item']  # type: RoomDesignItem
 			room_design_item['image_url'] = img_url
 			room_design_item['tags'] = tags

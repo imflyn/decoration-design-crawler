@@ -1,11 +1,13 @@
 import random
 
-from scrapy import signals
 from scrapy.http import HtmlResponse
 from selenium import webdriver
+from selenium.webdriver import DesiredCapabilities
 
 from msic.common import log, agents
 from msic.proxy.proxy_pool import proxy_pool
+
+JAVASCRIPT = 'JAVASCRIPT'
 
 
 class CatchExceptionMiddleware(object):
@@ -33,25 +35,32 @@ class CustomUserAgentMiddleware(object):
 
 
 class JavaScriptMiddleware(object):
-	@classmethod
-	def from_crawler(cls, crawler):
-		middleware = cls()
-		crawler.signals.connect(middleware.spider_opened, signals.spider_opened)
-		crawler.signals.connect(middleware.spider_closed, signals.spider_closed)
-		return middleware
-
 	def process_request(self, request, spider):
-		if 'javascript' in request.meta and request.meta['javascript'] is True:
-			self.driver.get(request.url)
-			body = self.driver.page_source
-			return HtmlResponse(self.driver.current_url, body=body, encoding='utf-8', request=request)
+		if JAVASCRIPT in request.meta and request.meta[JAVASCRIPT] is True:
+			driver = self.phantomjs_opened()
+			try:
+				driver.get(request.url)
+				body = driver.page_source
+				return HtmlResponse(request.url, body=body, encoding='utf-8', request=request)
+			finally:
+				self.phantomjs_closed(driver)
 
-	def spider_opened(self, spider):
-		service_args = [
-			"--webdriver-loglevel=ERROR"
-		]
-		self.driver = webdriver.PhantomJS(service_args=service_args)
-		self.driver.set_page_load_timeout(60)
+	def phantomjs_opened(self):
+		capabilities = DesiredCapabilities.PHANTOMJS.copy()
+		proxy = proxy_pool.random_choice_proxy()
+		capabilities['proxy'] = {
+			'proxyType': 'MANUAL',
+			'ftpProxy': proxy,
+			'sslProxy': proxy,
+			'httpProxy': proxy,
+			'noProxy': None
+		}
+		# capabilities['phantomjs.cli.args'] = [
+		# 	'--proxy-auth=' + evar.get('WONDERPROXY_USER') + ':' + evar.get('WONDERPROXY_PASS')
+		# ]
+		driver = webdriver.PhantomJS(desired_capabilities=capabilities)
+		driver.set_page_load_timeout(120)
+		return driver
 
-	def spider_closed(self, spider):
-		self.driver.quit()
+	def phantomjs_closed(self, driver):
+		driver.quit()
