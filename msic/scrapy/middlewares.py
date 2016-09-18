@@ -22,7 +22,7 @@ class CatchExceptionMiddleware(object):
 	def process_exception(self, request, exception, spider):
 		try:
 			proxy_pool.add_failed_time(request.meta['proxy'].replace('http://', ''))
-		except KeyError:
+		except Exception:
 			pass
 
 

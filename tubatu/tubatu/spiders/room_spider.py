@@ -35,7 +35,7 @@ class RoomSpider(CrawlSpider):
 			# http://xiaoguotu.to8to.com/p10221610.html
 			aid = items_selector.xpath('div//a/@href').extract()[0][2:-5]
 			# http://xiaoguotu.to8to.com/getxgtjson.php?a2=1&a12=&a11=10221610&a1=0
-			next_url = (constant.PROTOCOL_HTTP + self.start_url_domain + '/getxgtjson.php?a2=1&a12=&a11=%s&a1=') % aid
+			next_url = (constant.PROTOCOL_HTTP + self.start_url_domain + '/getxgtjson.php?a2=1&a12=&a11={aid}&a1=0').format(aid=aid)
 			room_design_service = RoomDesignService()
 			if not room_design_service.is_duplicate_url(next_url):
 				yield scrapy.Request(next_url, self.parse_content, meta={'aid': aid})

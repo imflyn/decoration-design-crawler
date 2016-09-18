@@ -40,4 +40,4 @@ def http_request(url: str, timeout=30) -> Response:
 
 
 def log(content: str):
-	print("============================= %s ==========================" % (get_utc_time() + " " + content))
+	print("============================= {content} ==========================".format(content=(get_utc_time() + " " + content)))
