@@ -9,14 +9,14 @@ from scrapy.pipelines.images import ImagesPipeline
 from scrapy.utils.project import get_project_settings
 
 from msic.common import utils
-from tubatu.constants import PORJECT_NAME
+from tubatu.constants import PROJECT_NAME
 from tubatu.service.room_design_service import RoomDesignService
 
 
 class RoomPipeline(object):
 	def process_item(self, item, spider):
 		create_time = utils.get_utc_time()
-		item['image_name'] = "/" + PORJECT_NAME + "/" + create_time[0:10] + "/" + utils.get_md5(create_time + item['html_url'])
+		item['image_name'] = "/" + PROJECT_NAME + "/" + create_time[0:10] + "/" + utils.get_md5(create_time + item['html_url'])
 		return item
 
 

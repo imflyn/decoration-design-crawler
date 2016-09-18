@@ -21,15 +21,14 @@ class RoomDesignService(object):
 		room_design_model._id = utils.get_uuid()
 		room_design_model.title = room_design_item['title']
 		room_design_model.html_url = room_design_item['html_url']
-		for tag in room_design_item['tags'][:]:
-			if tag.strip() == '':
-				room_design_item['tags'].remove(tag)
 		room_design_model.tags = room_design_item['tags']
 		room_design_model.description = room_design_item['description']
 		room_design_model.image_url = room_design_item['image_url']
 		room_design_model.image_width = room_design_item['image_width']
 		room_design_model.image_height = room_design_item['image_height']
-		room_design_model.image_name = room_design_item['image_name']
+		room_design_model.image_path = room_design_item['image_name']
+		room_design_model.image_name = room_design_model.image_path[room_design_model.image_path.rfind('/') + 1:]
+		room_design_model.create_time = utils.get_utc_time()
 		return room_design_model
 
 	def save_to_database(self, room_design_model: RoomDesignModel):

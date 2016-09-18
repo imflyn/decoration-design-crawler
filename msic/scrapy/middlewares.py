@@ -13,11 +13,17 @@ JAVASCRIPT = 'JAVASCRIPT'
 class CatchExceptionMiddleware(object):
 	def process_response(self, request, response, spider):
 		if response.status <= 200 or response.status >= 400:
-			proxy_pool.add_failed_time(request.meta['proxy'].replace('http://', ''))
+			try:
+				proxy_pool.add_failed_time(request.meta['proxy'].replace('http://', ''))
+			except KeyError:
+				pass
 		return response
 
 	def process_exception(self, request, exception, spider):
-		proxy_pool.add_failed_time(request.meta['proxy'].replace('http://', ''))
+		try:
+			proxy_pool.add_failed_time(request.meta['proxy'].replace('http://', ''))
+		except KeyError:
+			pass
 
 
 class CustomHttpProxyMiddleware(object):
