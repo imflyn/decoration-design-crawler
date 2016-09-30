@@ -11,8 +11,8 @@ from msic.core.service import mongodb_service
 from msic.proxy import proxy_strategy
 
 TASK_INTERVAL = 60
-FAILED_COUNT_BORDER = 10
-MIN_PROXY_COUNT = 20
+FAILED_COUNT_BORDER = 3
+MIN_PROXY_COUNT = 10
 
 REDIS_KEY_LAST_CHECK_IP_TIME = "last_check_ip_time"
 

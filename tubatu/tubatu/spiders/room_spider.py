@@ -44,7 +44,10 @@ class RoomSpider(CrawlSpider):
 
 	def parse_content(self, response):
 		aid = response.meta['aid']
-		data = json.loads(response.text)
+		try:
+			data = json.loads(response.text)
+		except:
+			print("-----------------------获取到json:" + response.text + "------------------------------")
 		data_img_list = data['dataImg']
 		data_img = None
 		for _data_img in data_img_list:
