@@ -62,6 +62,7 @@ DOWNLOADER_MIDDLEWARES = {
 	'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 1,
 	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 2,
 	'msic.scrapy.middlewares.CatchExceptionMiddleware': 999,
+	# 'tubatu.middlewares.RedirectionMiddleware': 998,
 }
 
 # Enable or disable extensions
