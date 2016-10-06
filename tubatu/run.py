@@ -11,7 +11,7 @@ from scrapy.crawler import CrawlerProcess
 from scrapy.utils.project import get_project_settings
 from scrapy import signals
 from pydispatch import dispatcher
-from tubatu.spiders.room_spider import RoomSpider
+from tubatu.spiders.design_picture_spider import DesignPictureSpider
 
 
 class Runner(object):
@@ -26,14 +26,14 @@ class Runner(object):
 		reactor.run()
 
 	def crawl(self):
-		self.process.crawl(RoomSpider())
+		self.process.crawl(DesignPictureSpider())
 
 	def start_proxy_pool(self):
 		from msic.proxy.proxy_pool import proxy_pool
 		proxy_pool.start()
 
 	def run(self):
-		self.start_proxy_pool()
+		# self.start_proxy_pool()
 		self.start_scrapy()
 
 

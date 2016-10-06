@@ -9,15 +9,7 @@ from scrapy.pipelines.images import ImagesPipeline
 from scrapy.utils.project import get_project_settings
 
 from msic.common import utils
-from tubatu.constants import PROJECT_NAME
-from tubatu.service.room_design_service import RoomDesignService
-
-
-class RoomPipeline(object):
-	def process_item(self, item, spider):
-		create_time = utils.get_utc_time()
-		item['image_name'] = "/" + PROJECT_NAME + "/" + create_time[0:10] + "/" + utils.get_md5(create_time + item['html_url'])
-		return item
+from tubatu.service.design_picture_service import DesignPictureService
 
 
 class CustomImagesPipeline(ImagesPipeline):
@@ -61,11 +53,11 @@ class CustomImagesPipeline(ImagesPipeline):
 		return "/" + project_name + "/" + date + "/" + file_name
 
 
-class RoomImagePipeline(CustomImagesPipeline):
+class DesignPictureImagePipeline(CustomImagesPipeline):
 	def __init__(self, store_uri, download_func=None, settings=None):
-		super(RoomImagePipeline, self).__init__(store_uri, settings=settings, download_func=download_func)
-		self.room_design_service = RoomDesignService()
+		super(DesignPictureImagePipeline, self).__init__(store_uri, settings=settings, download_func=download_func)
+		self.design_picture_service = DesignPictureService()
 
 	def item_completed(self, results, item, info):
 		if True in results[0]:
-			self.room_design_service.handle_item(item)
+			self.design_picture_service.handle_item(item)

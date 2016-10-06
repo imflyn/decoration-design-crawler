@@ -8,8 +8,10 @@
 import scrapy
 
 
-class RoomDesignItem(scrapy.Item):
+class DesignPictureItem(scrapy.Item):
+	id = scrapy.Field()
 	title = scrapy.Field()
+	sub_title = scrapy.Field()
 	html_url = scrapy.Field()
 	tags = scrapy.Field()
 	description = scrapy.Field()

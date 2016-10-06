@@ -1,7 +1,9 @@
-class RoomDesignModel(object):
+class DesignPictureModel(object):
 	def __init__(self):
 		self._id = ""
+		self._fid = ""
 		self.title = ""
+		self.sub_title = ""
 		self.html_url = ""
 		self.tags = []
 		self.description = ""

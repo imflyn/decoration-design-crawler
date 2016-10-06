@@ -27,13 +27,13 @@ NEWSPIDER_MODULE = 'tubatu.spiders'
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-CONCURRENT_REQUESTS = 24
-REACTOR_THREADPOOL_MAXSIZE = 12
+CONCURRENT_REQUESTS = 12
+REACTOR_THREADPOOL_MAXSIZE = 8
 
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0
+DOWNLOAD_DELAY = 0.6
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -59,7 +59,7 @@ COOKIES_ENABLED = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-	'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 1,
+	# 'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 1,
 	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 2,
 	'msic.scrapy.middlewares.CatchExceptionMiddleware': 999,
 	# 'tubatu.middlewares.RedirectionMiddleware': 998,
