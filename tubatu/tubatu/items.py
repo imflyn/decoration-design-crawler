@@ -20,3 +20,11 @@ class DesignPictureItem(scrapy.Item):
 	image_height = scrapy.Field()
 	image_name = scrapy.Field()
 	pass
+
+
+class DesignTopicItem(scrapy.Item):
+	title = scrapy.Field()
+	description = scrapy.Field()
+	html_url = scrapy.Field()
+	article = scrapy.Field()
+	create_time = scrapy.Field()

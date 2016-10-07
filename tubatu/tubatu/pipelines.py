@@ -61,3 +61,12 @@ class DesignPictureImagePipeline(CustomImagesPipeline):
 	def item_completed(self, results, item, info):
 		if True in results[0]:
 			self.design_picture_service.handle_item(item)
+
+
+class DesignTopicPipeline(object):
+	def process_item(self, item, spider):
+		item['title']
+		item['description']
+		item['article']
+		item['html_url']
+		print(item)

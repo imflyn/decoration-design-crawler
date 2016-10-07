@@ -33,10 +33,10 @@ class DesignPictureSpider(CrawlSpider):
 	def parse_list(self, response):
 		selector = Selector(response)
 		items_selector = selector.xpath('//div[@class="xmp_container"]//div[@class="item"]')
-		for items_selector in items_selector:
+		for item_selector in items_selector:
 			# http://xiaoguotu.to8to.com/c10037052.html
-			cid = items_selector.xpath('div//a/@href').extract()[0][2:-6]
-			title = items_selector.xpath('div//a/@title').extract()[0]
+			cid = item_selector.xpath('div//a/@href').extract()[0][2:-6]
+			title = item_selector.xpath('div//a/@title').extract()[0]
 			# http://xiaoguotu.to8to.com/getxgtjson.php?a2=0&a12=&a11=10037052&a1=0
 			next_url = (constant.PROTOCOL_HTTP + self.start_url_domain + '/getxgtjson.php?a2=0&a12=&a11={cid}&a1=0').format(cid=cid)
 			yield scrapy.Request(next_url, self.parse_content, meta={'cid': cid, 'title': title})

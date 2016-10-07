@@ -4,6 +4,8 @@ from os.path import dirname
 
 from twisted.internet import reactor
 
+from tubatu.spiders.design_topic_spider import DesignTopicSpider
+
 path = dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(path)
 
@@ -26,7 +28,8 @@ class Runner(object):
 		reactor.run()
 
 	def crawl(self):
-		self.process.crawl(DesignPictureSpider())
+		# self.process.crawl(DesignPictureSpider())
+		self.process.crawl(DesignTopicSpider())
 
 	def start_proxy_pool(self):
 		from msic.proxy.proxy_pool import proxy_pool
