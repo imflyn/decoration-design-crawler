@@ -6,6 +6,7 @@ from scrapy.spiders import Rule
 
 from msic.common import constant
 from tubatu.items import DesignTopicItem
+from tubatu.service.design_topic_service import DesignTopicService
 
 
 class DesignTopicSpider(CrawlSpider):
@@ -21,6 +22,7 @@ class DesignTopicSpider(CrawlSpider):
 			'tubatu.pipelines.DesignTopicPipeline': 301,
 		}
 	}
+	design_topic_service = DesignTopicService()
 
 	def process_links(self, links):
 		for link in links:
@@ -36,6 +38,8 @@ class DesignTopicSpider(CrawlSpider):
 			href = href.strip()
 			# http://xiaoguotu.to8to.com/topic/7334.html
 			next_url = (constant.PROTOCOL_HTTP + self.start_url_domain + href)
+			if self.design_topic_service.is_duplicate_url(next_url):
+				continue
 			yield scrapy.Request(next_url, self.parse_content)
 
 	def parse_content(self, response):
