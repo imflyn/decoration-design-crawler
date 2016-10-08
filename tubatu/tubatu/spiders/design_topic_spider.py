@@ -19,7 +19,6 @@ class DesignTopicSpider(CrawlSpider):
 	custom_settings = {
 		'ITEM_PIPELINES': {
 			'tubatu.pipelines.DesignTopicPipeline': 301,
-			# 'tubatu.pipelines.DesignPictureImagePipeline': 302,
 		}
 	}
 
@@ -44,19 +43,27 @@ class DesignTopicSpider(CrawlSpider):
 		title = selector.xpath('//div[@class="xdb_title"]/h1/text()').extract()[0]
 		description = selector.xpath('//div[@class="xdbc_description"]//div//p/text()').extract()[0]
 		items_selector = selector.xpath('//div[@class="xdbc_main_content"]//p')
-		article = {}
+		article = []
 		text = ''
 		for index, item_selector in enumerate(items_selector):
-			if index % 2 == 0:
+			try:
+				text = item_selector.xpath('span/text()').extract()[0]
+			except IndexError:
 				try:
-					text = item_selector.xpath('span/text()').extract()[0]
+					img_url = item_selector.xpath('img/@src').extract()[0]
+					img_width = 0
+					try:
+						img_width = item_selector.xpath('img/@width').extract()[0]
+					except IndexError:
+						pass
+					img_height = 0
+					try:
+						img_height = item_selector.xpath('img/@height').extract()[0]
+					except IndexError:
+						pass
+					article.append({'content': text, 'img_url': img_url, 'img_width': img_width, 'img_height': img_height})
 				except IndexError:
 					continue
-			else:
-				image_url = item_selector.xpath('img/@src').extract()[0]
-				image_width = item_selector.xpath('img/@width').extract()[0]
-				image_height = item_selector.xpath('img/@height').extract()[0]
-				article[text] = [image_url, image_width, image_height]
 		design_topic_item = DesignTopicItem()
 		design_topic_item['title'] = title
 		design_topic_item['description'] = description
