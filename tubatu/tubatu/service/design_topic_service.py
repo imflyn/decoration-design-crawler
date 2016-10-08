@@ -26,7 +26,7 @@ class DesignTopicService(DesignService):
 		if self.is_duplicate_url(design_topic_item['html_url']):
 			return
 		design_topic_model = self.get_model(design_topic_item)
-		self.save_to_database(design_topic_model)
+		self.save_to_database(self.collection, design_topic_model)
 		self.insert_to_redis(design_topic_model.html_url)
 
 		log.info("=========================================================================================")

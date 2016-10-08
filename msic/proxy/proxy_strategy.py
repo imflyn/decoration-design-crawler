@@ -133,4 +133,3 @@ def crawl_proxy() -> []:
 	proxy_list += get_proxy_list(GetXiciChinaProxyStrategy())
 	proxy_list += get_proxy_list(GetXiciForeignProxyStrategy())
 	return proxy_list
-

@@ -16,9 +16,21 @@ class DesignService(object):
 	def get_model(self, design_item):
 		pass
 
-	def save_to_database(self, design_model):
+	def save_to_database(self, collection, item):
 		try:
-			mongodb_service.insert(self.collection, design_model.__dict__)
+			mongodb_service.insert(collection, item.__dict__)
+		except Exception as e:
+			log.error(e)
+
+	def find_one(self, collection, condition: dict):
+		try:
+			return collection.find_one(condition)
+		except Exception as e:
+			log.error(e)
+
+	def update_one(self, collection, condition: dict, value: dict):
+		try:
+			return collection.update_one(condition, {"$set": value})
 		except Exception as e:
 			log.error(e)
 

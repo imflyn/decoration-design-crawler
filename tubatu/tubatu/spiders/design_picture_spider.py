@@ -9,7 +9,6 @@ from scrapy.spiders import Rule
 from msic.common import log, constant
 from msic.common import utils
 from msic.proxy.proxy_pool import proxy_pool
-from tubatu.constants import PROJECT_NAME
 from tubatu.constants import ZONE_TYPE, STYLE_ID, AREA, COLOR_ID, HX_ID, PART_ID
 from tubatu.items import DesignPictureItem
 from tubatu.service.design_picture_service import DesignPictureService

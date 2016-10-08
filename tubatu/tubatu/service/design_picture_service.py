@@ -52,12 +52,12 @@ class DesignPictureService(DesignService):
 		if self.is_duplicate_url(design_picture_item['img_url']):
 			return
 		design_picture_model = self.get_design_picture_model(design_picture_item)
-		self.save_to_database(design_picture_model)
+		self.save_to_database(self.collection, design_picture_model)
 
-		summary_model = self.summary_collection.find_one({'id': design_picture_model.fid})
+		summary_model = self.find_one(self.summary_collection, {'id': design_picture_model.fid})
 		if summary_model is None:
 			summary_model = self.create_design_picture_summary_model(design_picture_item)
-			self.summary_collection.insert_one(summary_model.__dict__)
+			self.save_to_database(self.summary_collection, summary_model)
 		else:
 			summary_model['tags'].append(design_picture_model.tags)
 			tags = []
@@ -69,8 +69,7 @@ class DesignPictureService(DesignService):
 			for cid in summary_model['cid']:
 				if cid not in cid_array:
 					cid_array.append(cid)
-			self.summary_collection.update_one({'id': summary_model['id']},
-			                                   {"$set": {'update_time': utils.get_utc_time(), 'tags': tags, 'cid': cid_array}})
+			self.update_one(self.summary_collection, {'id': summary_model['id']}, {'update_time': utils.get_utc_time(), 'tags': tags, 'cid': cid_array})
 		self.insert_to_redis(design_picture_model.img_url)
 
 		log.info("=========================================================================================")
