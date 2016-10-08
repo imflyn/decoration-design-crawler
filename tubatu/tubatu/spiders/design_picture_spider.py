@@ -103,7 +103,7 @@ class DesignPictureSpider(CrawlSpider):
 				pass
 			try:
 				design_picture_item = DesignPictureItem()  # type: DesignPictureItem
-				design_picture_item['id'] = uuid
+				design_picture_item['fid'] = uuid
 				design_picture_item['html_url'] = response.url
 				design_picture_item['img_url'] = img_url
 				design_picture_item['tags'] = tags

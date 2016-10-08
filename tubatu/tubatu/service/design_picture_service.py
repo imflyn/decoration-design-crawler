@@ -19,7 +19,7 @@ class DesignPictureService(DesignService):
 	def get_design_picture_model(self, design_picture_item: DesignPictureItem) -> DesignPictureModel:
 		design_picture_model = DesignPictureModel()
 		design_picture_model.id = utils.get_uuid()
-		design_picture_model.fid = design_picture_item['id']
+		design_picture_model.fid = design_picture_item['fid']
 		design_picture_model.title = design_picture_item['title']
 		design_picture_model.sub_title = design_picture_item['sub_title']
 		design_picture_model.html_url = design_picture_item['html_url']
@@ -32,20 +32,20 @@ class DesignPictureService(DesignService):
 		design_picture_model.create_time = utils.get_utc_time()
 		return design_picture_model
 
-	def create_design_picture_summary_model(self, design_picture_item: DesignPictureItem) -> DesignPictureSummaryModel:
+	def create_design_picture_summary_model(self, design_picture_model: DesignPictureModel) -> DesignPictureSummaryModel:
 		design_picture_summary_model = DesignPictureSummaryModel()
-		design_picture_summary_model.id = utils.get_uuid()
-		design_picture_summary_model.cid = design_picture_item['id']
-		design_picture_summary_model.title = design_picture_item['title']
-		design_picture_summary_model.description = design_picture_item['description']
-		design_picture_summary_model.tags = design_picture_item['tags']
-		design_picture_summary_model.html_url = design_picture_item['html_url']
+		design_picture_summary_model.id = design_picture_model.fid
+		design_picture_summary_model.cid = [design_picture_model.id]
+		design_picture_summary_model.title = design_picture_model.title
+		design_picture_summary_model.description = design_picture_model.description
+		design_picture_summary_model.tags = design_picture_model.tags
+		design_picture_summary_model.html_url = design_picture_model.html_url
 		design_picture_summary_model.create_time = utils.get_utc_time()
 		design_picture_summary_model.update_time = design_picture_summary_model.create_time
-		design_picture_summary_model.cover_img_url = design_picture_item['img_url']
-		design_picture_summary_model.cover_img_width = design_picture_item['img_width']
-		design_picture_summary_model.cover_img_height = design_picture_item['img_height']
-		design_picture_summary_model.cover_img_name = design_picture_item['img_name']
+		design_picture_summary_model.cover_img_url = design_picture_model.img_url
+		design_picture_summary_model.cover_img_width = design_picture_model.img_width
+		design_picture_summary_model.cover_img_height = design_picture_model.img_height
+		design_picture_summary_model.cover_img_name = design_picture_model.img_name
 		return design_picture_summary_model
 
 	def handle_item(self, design_picture_item: DesignPictureItem):
@@ -56,20 +56,13 @@ class DesignPictureService(DesignService):
 
 		summary_model = self.find_one(self.summary_collection, {'id': design_picture_model.fid})
 		if summary_model is None:
-			summary_model = self.create_design_picture_summary_model(design_picture_item)
+			summary_model = self.create_design_picture_summary_model(design_picture_model)
 			self.save_to_database(self.summary_collection, summary_model)
 		else:
-			summary_model['tags'].append(design_picture_model.tags)
-			tags = []
-			for tag in summary_model['tags']:
-				if tag not in tags:
-					tags.append(tag)
+			tags = list(set(summary_model['tags']).union(set(design_picture_model.tags)))
 			summary_model['cid'].append(design_picture_model.id)
-			cid_array = []
-			for cid in summary_model['cid']:
-				if cid not in cid_array:
-					cid_array.append(cid)
-			self.update_one(self.summary_collection, {'id': summary_model['id']}, {'update_time': utils.get_utc_time(), 'tags': tags, 'cid': cid_array})
+			self.update_one(self.summary_collection, {'id': summary_model['id']},
+			                {'update_time': utils.get_utc_time(), 'tags': tags, 'cid': summary_model['cid']})
 		self.insert_to_redis(design_picture_model.img_url)
 
 		log.info("=========================================================================================")

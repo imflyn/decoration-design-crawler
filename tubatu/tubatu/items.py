@@ -9,7 +9,7 @@ import scrapy
 
 
 class DesignPictureItem(scrapy.Item):
-	id = scrapy.Field()
+	fid = scrapy.Field()
 	title = scrapy.Field()
 	sub_title = scrapy.Field()
 	html_url = scrapy.Field()
