@@ -3,11 +3,18 @@ from PIL import Image
 
 from msic.common import utils
 from tubatu import config
+from tubatu.constants import PROJECT_NAME
 
 IMAGE_SIZE = 500, 500
 
 
 class ImageService(object):
+	@staticmethod
+	def generate_name(key):
+		create_time = utils.get_utc_time()
+		img_name = "/" + PROJECT_NAME + "/" + create_time[0:10] + "/" + utils.get_md5(create_time + key)
+		return img_name
+
 	@staticmethod
 	def get_file_name(image_name) -> str:
 		name_data = image_name[1:].split("/")

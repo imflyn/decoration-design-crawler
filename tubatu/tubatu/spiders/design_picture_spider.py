@@ -25,7 +25,7 @@ class DesignPictureSpider(CrawlSpider):
 	)
 	custom_settings = {
 		'ITEM_PIPELINES': {
-			'tubatu.pipelines.DesignPictureImagePipeline': 302,
+			'tubatu.pipelines.DesignPicturePipeline': 302,
 		}
 	}
 	design_picture_service = DesignPictureService()
@@ -106,16 +106,13 @@ class DesignPictureSpider(CrawlSpider):
 				design_picture_item = DesignPictureItem()  # type: DesignPictureItem
 				design_picture_item['id'] = uuid
 				design_picture_item['html_url'] = response.url
-				design_picture_item['image_url'] = img_url
+				design_picture_item['img_url'] = img_url
 				design_picture_item['tags'] = tags
 				design_picture_item['title'] = title
 				design_picture_item['sub_title'] = sub_title
-				design_picture_item['image_width'] = original_width
-				design_picture_item['image_height'] = original_height
+				design_picture_item['img_width'] = original_width
+				design_picture_item['img_height'] = original_height
 				design_picture_item['description'] = design_picture_item['title']
-				create_time = utils.get_utc_time()
-				design_picture_item['image_name'] = "/" + PROJECT_NAME + "/" + create_time[0:10] + "/" + utils.get_md5(
-					create_time + design_picture_item['html_url'])
 				yield design_picture_item
 			except Exception as e:
 				print("-----------------------获取到json:" + response.text + "------------------------------")

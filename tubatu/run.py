@@ -28,8 +28,8 @@ class Runner(object):
 		reactor.run()
 
 	def crawl(self):
-		# self.process.crawl(DesignPictureSpider())
-		self.process.crawl(DesignTopicSpider())
+		self.process.crawl(DesignPictureSpider())
+		# self.process.crawl(DesignTopicSpider())
 
 	def start_proxy_pool(self):
 		from msic.proxy.proxy_pool import proxy_pool

@@ -15,11 +15,10 @@ class DesignPictureItem(scrapy.Item):
 	html_url = scrapy.Field()
 	tags = scrapy.Field()
 	description = scrapy.Field()
-	image_url = scrapy.Field()
-	image_width = scrapy.Field()
-	image_height = scrapy.Field()
-	image_name = scrapy.Field()
-	pass
+	img_url = scrapy.Field()
+	img_width = scrapy.Field()
+	img_height = scrapy.Field()
+	img_name = scrapy.Field()
 
 
 class DesignTopicItem(scrapy.Item):
