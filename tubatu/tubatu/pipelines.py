@@ -40,3 +40,5 @@ class DesignTopicPipeline(object):
 			ImageService.save_thumbnail(file_path, thumb_path)
 			part['img_name'] = img_name
 		self.design_topic_service.handle_item(item)
+
+

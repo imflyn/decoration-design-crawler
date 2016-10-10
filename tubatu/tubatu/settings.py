@@ -12,6 +12,8 @@ import os
 import sys
 from os.path import dirname
 
+from tubatu.config import USE_PROXY
+
 path = dirname(dirname(os.path.abspath(os.path.dirname(__file__))))
 sys.path.append(path)
 
@@ -33,7 +35,7 @@ REACTOR_THREADPOOL_MAXSIZE = 8
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 1
+DOWNLOAD_DELAY = 2
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -59,11 +61,13 @@ COOKIES_ENABLED = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-	# 'msic.scrapy.middlewares.CustomHttpProxyMiddleware': 1,
 	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 2,
 	'msic.scrapy.middlewares.CatchExceptionMiddleware': 999,
-	# 'tubatu.middlewares.RedirectionMiddleware': 998,
+	'tubatu.middlewares.RedirectionMiddleware': 998,
 }
+
+if USE_PROXY:
+	DOWNLOADER_MIDDLEWARES['msic.scrapy.middlewares.CustomHttpProxyMiddleware'] = 1
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html

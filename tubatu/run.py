@@ -1,8 +1,12 @@
 import os
 import sys
+import time
 from os.path import dirname
 
+from schedule import Scheduler
 from twisted.internet import reactor
+
+from tubatu import config
 
 path = dirname(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(path)
@@ -32,12 +36,26 @@ class Runner(object):
 
 	def start_proxy_pool(self):
 		from msic.proxy.proxy_pool import proxy_pool
-		proxy_pool.start()
+		if config.USE_PROXY:
+			proxy_pool.start()
+		else:
+			proxy_pool.drop_proxy()
 
 	def run(self):
-		# self.start_proxy_pool()
+		self.start_proxy_pool()
 		self.start_scrapy()
 
 
 if __name__ == '__main__':
-	Runner().run()
+	def task():
+		Runner().run()
+
+
+	task()
+
+	# schedule = Scheduler()
+	# schedule.every(2).minutes.do(task)
+	#
+	# while True:
+	# 	schedule.run_pending()
+	# 	time.sleep(1)

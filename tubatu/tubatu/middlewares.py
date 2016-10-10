@@ -1,17 +1,15 @@
-import requests
-from requests.adapters import HTTPAdapter
-
-from msic.common.constant import HEADERS
+from scrapy import Spider
+from twisted.internet import reactor
 
 
 class RedirectionMiddleware(object):
-	def process_response(self, request, response, spider):
-		if request.url == 'http://captcha.to8to.com/captcha.html':
-			session = requests.Session()
-			session.mount('https://', HTTPAdapter(max_retries=5))
-			session.mount('http://', HTTPAdapter(max_retries=5))
-			captcha_request = session.get(request.url, headers=HEADERS, timeout=30)
-		# TODO get cookies
+	Failed_count = 0
+
+	def process_response(self, request, response, spider: Spider):
+		if response.status == 302 or response.status == 503:
+			self.Failed_count += 1
+			if self.Failed_count > 3:
+				pass
 		return response
 
 	def process_exception(self, request, exception, spider):

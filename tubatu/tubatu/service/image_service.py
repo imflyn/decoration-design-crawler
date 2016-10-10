@@ -2,6 +2,7 @@ import requests
 from PIL import Image
 
 from msic.common import utils
+from msic.proxy.proxy_pool import proxy_pool
 from tubatu import config
 from tubatu.constants import PROJECT_NAME
 
@@ -41,11 +42,25 @@ class ImageService(object):
 
 	@staticmethod
 	def download_img(img_url, file_path):
-		response = requests.get(img_url, stream=True)
-		if response.status_code == 200:
-			with open(file_path, 'wb') as f:
-				for chunk in response.iter_content(1024):
-					f.write(chunk)
+		proxies = None
+		proxy = ''
+		if config.USE_PROXY:
+			proxy = proxy_pool.random_choice_proxy()
+			proxies = {
+				'http': "http://%s" % proxy,
+			}
+		try:
+			response = requests.get(img_url, stream=True, proxies=proxies)
+			if response.status_code == 200:
+				with open(file_path, 'wb') as f:
+					for chunk in response.iter_content(1024):
+						f.write(chunk)
+			else:
+				if config.USE_PROXY:
+					proxy_pool.add_failed_time(proxy)
+		except:
+			if config.USE_PROXY:
+				proxy_pool.add_failed_time(proxy)
 
 	@staticmethod
 	def save_thumbnail(file_path, thumb_path):

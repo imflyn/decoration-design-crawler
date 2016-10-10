@@ -15,3 +15,5 @@ DATABASE_NAME = "tubatu"
 mongodb = mongodb_service.get_db(config.mongodb_client, DATABASE_NAME)
 
 IMAGES_STORE = 'D:/scrapy'
+
+USE_PROXY = False

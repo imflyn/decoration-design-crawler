@@ -112,5 +112,8 @@ class ProxyPool(object):
 		thread = threading.Thread(target=task)
 		thread.start()
 
+	def drop_proxy(self):
+		self.collection.delete_many({})
+
 
 proxy_pool = ProxyPool()
