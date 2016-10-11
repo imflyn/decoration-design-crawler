@@ -1,15 +1,11 @@
 from scrapy import Spider
-from twisted.internet import reactor
+from scrapy.exceptions import CloseSpider
 
 
 class RedirectionMiddleware(object):
-	Failed_count = 0
-
 	def process_response(self, request, response, spider: Spider):
 		if response.status == 302 or response.status == 503:
-			self.Failed_count += 1
-			if self.Failed_count > 3:
-				pass
+			raise CloseSpider('error http code')
 		return response
 
 	def process_exception(self, request, exception, spider):

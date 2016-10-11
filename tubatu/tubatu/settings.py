@@ -35,7 +35,7 @@ REACTOR_THREADPOOL_MAXSIZE = 8
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 2
+DOWNLOAD_DELAY = 0
 # The download delay setting will honor only one of:
 # CONCURRENT_REQUESTS_PER_DOMAIN = 16
 # CONCURRENT_REQUESTS_PER_IP = 16
@@ -111,3 +111,6 @@ LOG_FORMAT = '%(asctime)s,%(msecs)d  [%(name)s] %(levelname)s: %(message)s'
 
 # MEMDEBUG_ENABLED = True
 # MEMDEBUG_NOTIFY = ['imflyn@163.com']
+
+
+CLOSESPIDER_ERRORCOUNT = 100

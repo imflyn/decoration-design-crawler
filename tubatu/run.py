@@ -47,15 +47,18 @@ class Runner(object):
 
 
 if __name__ == '__main__':
+	runner = Runner()
+
+
 	def task():
-		Runner().run()
+		runner.run()
 
 
 	task()
 
-	# schedule = Scheduler()
-	# schedule.every(2).minutes.do(task)
-	#
-	# while True:
-	# 	schedule.run_pending()
-	# 	time.sleep(1)
+	schedule = Scheduler()
+	schedule.every(60).minutes.do(task)
+
+	while True:
+		schedule.run_pending()
+		time.sleep(1)
