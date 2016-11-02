@@ -111,5 +111,3 @@ LOG_FORMAT = '%(asctime)s,%(msecs)d  [%(name)s] %(levelname)s: %(message)s'
 
 # MEMDEBUG_ENABLED = True
 # MEMDEBUG_NOTIFY = ['imflyn@163.com']
-
-
