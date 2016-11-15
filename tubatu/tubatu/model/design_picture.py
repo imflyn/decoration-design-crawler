@@ -11,7 +11,7 @@ class DesignPictureModel(object):
 		self.img_width = 0
 		self.img_height = 0
 		self.img_name = ""  # /tubatu/2016-09-01/ff5e6d6e5abafbaeb56af2b5034d83e9
-		self.create_time = 0
+		self.create_time = ""
 
 
 class DesignPictureSummaryModel(object):
