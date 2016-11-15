@@ -37,6 +37,7 @@ class DesignStrategySpider(CrawlSpider):
 			# http://guju.com.cn/strategy/strategy_getStrategyInfo_ajax?strategyModel.id=4498
 			next_url = (constant.PROTOCOL_HTTP + self.start_url_domain + '/strategy/strategy_getStrategyInfo_ajax?strategyModel.id={id}').format(id=id)
 			if self.design_strategy_service.is_duplicate_url(next_url):
+				log.info("=================过滤了" + next_url+"===========")
 				continue
 			yield scrapy.Request(next_url, self.parse_content, meta={'id': id})
 
@@ -53,7 +54,7 @@ class DesignStrategySpider(CrawlSpider):
 			description = model['description']
 			content = model['context']
 
-			design_strategy_item = DesignStrategyItem()  # type: DesignPictureItem
+			design_strategy_item = DesignStrategyItem()  # type: DesignStrategyItem
 			design_strategy_item['category'] = category
 			design_strategy_item['title'] = title
 			design_strategy_item['description'] = description
