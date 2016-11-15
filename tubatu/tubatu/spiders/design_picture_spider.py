@@ -9,6 +9,7 @@ from scrapy.spiders import Rule
 from msic.common import log, constant
 from msic.common import utils
 from msic.proxy.proxy_pool import proxy_pool
+from tubatu import config
 from tubatu.constants import ZONE_TYPE, STYLE_ID, AREA, COLOR_ID, HX_ID, PART_ID
 from tubatu.items import DesignPictureItem
 from tubatu.service.design_picture_service import DesignPictureService
@@ -116,4 +117,5 @@ class DesignPictureSpider(CrawlSpider):
 			except Exception as e:
 				print("-----------------------获取到json:" + response.text + "------------------------------")
 				log.warn("%s ( refer: %s )" % (e, response.url))
-				proxy_pool.add_failed_time(response.meta['proxy'].replace('http://', ''))
+				if config.USE_PROXY:
+					proxy_pool.add_failed_time(response.meta['proxy'].replace('http://', ''))
