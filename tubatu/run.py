@@ -21,57 +21,57 @@ from tubatu.spiders.design_topic_spider import DesignTopicSpider
 
 
 class Runner(object):
-	def __init__(self):
-		self.is_running = False
-		dispatcher.connect(self.pause_crawler, signals.engine_stopped)
-		self.setting = get_project_settings()
-		self.process = None
+    def __init__(self):
+        self.is_running = False
+        dispatcher.connect(self.pause_crawler, signals.engine_stopped)
+        self.setting = get_project_settings()
+        self.process = None
 
-	def start_scrapy(self):
-		self.process = CrawlerProcess(self.setting)
-		self.crawl()
-		reactor.run()
+    def start_scrapy(self):
+        self.process = CrawlerProcess(self.setting)
+        self.crawl()
+        reactor.run()
 
-	def pause_crawler(self):
-		self.is_running = False
-		print("============ 爬虫已停止 ===================")
+    def pause_crawler(self):
+        self.is_running = False
+        print("============ 爬虫已停止 ===================")
 
-	def crawl(self):
-		self.is_running = True
-		self.process.crawl(DesignPictureSpider())
-		self.process.crawl(DesignTopicSpider())
+    def crawl(self):
+        self.is_running = True
+        self.process.crawl(DesignPictureSpider())
+        self.process.crawl(DesignTopicSpider())
 
-	def start_proxy_pool(self):
-		from msic.proxy.proxy_pool import proxy_pool
-		if config.USE_PROXY:
-			proxy_pool.start()
-		else:
-			proxy_pool.drop_proxy()
+    def start_proxy_pool(self):
+        from msic.proxy.proxy_pool import proxy_pool
+        if config.USE_PROXY:
+            proxy_pool.start()
+        else:
+            proxy_pool.drop_proxy()
 
-	def run(self):
-		self.start_proxy_pool()
-		self.start_scrapy()
+    def run(self):
+        self.start_proxy_pool()
+        self.start_scrapy()
 
 
 if __name__ == '__main__':
-	runner = Runner()
+    runner = Runner()
 
 
-	def thread_task():
-		def task():
-			if not runner.is_running:
-				print("============ 开始重新爬取 ===================")
-				runner.crawl()
+    def thread_task():
+        def task():
+            if not runner.is_running:
+                print("============ 开始重新爬取 ===================")
+                runner.crawl()
 
-		schedule = Scheduler()
-		schedule.every(30).minutes.do(task)
+        schedule = Scheduler()
+        schedule.every(30).minutes.do(task)
 
-		while True:
-			schedule.run_pending()
-			time.sleep(1)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
 
 
-	thread = threading.Thread(target=thread_task)
-	thread.start()
+    thread = threading.Thread(target=thread_task)
+    thread.start()
 
-	runner.run()
+    runner.run()

@@ -19,26 +19,26 @@ logger.addHandler(warn_handler)
 
 
 def handle_exception(exc_type, exc_value, exc_traceback):
-	if issubclass(exc_type, KeyboardInterrupt):
-		sys.__excepthook__(exc_type, exc_value, exc_traceback)
-		return
-	logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
+    if issubclass(exc_type, KeyboardInterrupt):
+        sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        return
+    logger.error("Uncaught exception", exc_info=(exc_type, exc_value, exc_traceback))
 
 
 sys.excepthook = handle_exception
 
 
 def warn(msg):
-	logger.warning(msg)
+    logger.warning(msg)
 
 
 def info(msg):
-	logger.info(msg)
+    logger.info(msg)
 
 
 def debug(msg):
-	logger.debug(msg)
+    logger.debug(msg)
 
 
 def error(e: Exception):
-	logger.error("Exception %s" % e)
+    logger.error("Exception %s" % e)

@@ -61,12 +61,12 @@ COOKIES_ENABLED = False
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
-	'msic.scrapy.middlewares.CustomUserAgentMiddleware': 2,
-	'guju.middlewares.RedirectionMiddleware': 998,
+    'msic.scrapy.middlewares.CustomUserAgentMiddleware': 2,
+    'guju.middlewares.RedirectionMiddleware': 998,
 }
 if USE_PROXY:
-	DOWNLOADER_MIDDLEWARES['msic.scrapy.middlewares.CustomHttpProxyMiddleware'] = 1
-	DOWNLOADER_MIDDLEWARES['msic.scrapy.middlewares.CatchExceptionMiddleware'] = 999
+    DOWNLOADER_MIDDLEWARES['msic.scrapy.middlewares.CustomHttpProxyMiddleware'] = 1
+    DOWNLOADER_MIDDLEWARES['msic.scrapy.middlewares.CatchExceptionMiddleware'] = 999
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html

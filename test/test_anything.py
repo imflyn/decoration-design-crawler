@@ -1,5 +1,5 @@
 def foo(x, y):
-	print(x, y)
+    print(x, y)
 
 
 alist = [1, 2]

@@ -9,8 +9,8 @@ import scrapy
 
 
 class DesignStrategyItem(scrapy.Item):
-	title = scrapy.Field()
-	html_url = scrapy.Field()
-	description = scrapy.Field()
-	content = scrapy.Field()
-	category = scrapy.Field()
+    title = scrapy.Field()
+    html_url = scrapy.Field()
+    description = scrapy.Field()
+    content = scrapy.Field()
+    category = scrapy.Field()

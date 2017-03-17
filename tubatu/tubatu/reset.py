@@ -12,4 +12,3 @@ redis_client.delete('tubatu_design_topic_filter')
 redis_client.delete('tubatu_design_picture_filter')
 
 shutil.rmtree(IMAGES_STORE)
-

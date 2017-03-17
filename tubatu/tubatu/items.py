@@ -9,21 +9,21 @@ import scrapy
 
 
 class DesignPictureItem(scrapy.Item):
-	fid = scrapy.Field()
-	title = scrapy.Field()
-	sub_title = scrapy.Field()
-	html_url = scrapy.Field()
-	tags = scrapy.Field()
-	description = scrapy.Field()
-	img_url = scrapy.Field()
-	img_width = scrapy.Field()
-	img_height = scrapy.Field()
-	img_name = scrapy.Field()
+    fid = scrapy.Field()
+    title = scrapy.Field()
+    sub_title = scrapy.Field()
+    html_url = scrapy.Field()
+    tags = scrapy.Field()
+    description = scrapy.Field()
+    img_url = scrapy.Field()
+    img_width = scrapy.Field()
+    img_height = scrapy.Field()
+    img_name = scrapy.Field()
 
 
 class DesignTopicItem(scrapy.Item):
-	title = scrapy.Field()
-	description = scrapy.Field()
-	html_url = scrapy.Field()
-	article = scrapy.Field()
-	create_time = scrapy.Field()
+    title = scrapy.Field()
+    description = scrapy.Field()
+    html_url = scrapy.Field()
+    article = scrapy.Field()
+    create_time = scrapy.Field()
