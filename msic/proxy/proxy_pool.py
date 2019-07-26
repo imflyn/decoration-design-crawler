@@ -80,7 +80,7 @@ class ProxyPool(object):
         for proxy in proxy_list:
             ip = proxy['ip']
             start_time = time.time()
-            response = utils.http_request('http://lwons.com/wx', timeout=10)
+            response = utils.http_request('http://www.baidu.com', timeout=10)
             is_success = response.status_code == 200
             response.close()
             if not is_success:

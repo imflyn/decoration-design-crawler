@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 
 from msic.common import utils
 from msic.proxy.proxy import Proxy
+import time
 
 
 class GetProxyStrategy(object):
@@ -74,7 +75,7 @@ class Get66ipProxyStrategy(GetProxyStrategy):
 
 class GetKuaidailiProxyStrategy(GetProxyStrategy):
     NAME = 'Kuaidaili'
-    URL = 'http://www.kuaidaili.com/proxylist/%s/'
+    URL = 'http://www.kuaidaili.com/free/inha/%s/'
     SPEED = 5
 
     def execute(self):
@@ -83,6 +84,7 @@ class GetKuaidailiProxyStrategy(GetProxyStrategy):
             url = self.URL % num
             context = utils.http_request(url).text
             ip = ip + self.parse(context)
+            time.sleep(3)
         return ip
 
     def parse(self, content) -> []:
@@ -128,8 +130,8 @@ def crawl_proxy() -> []:
             _proxy_list.append(_proxy)
         return _proxy_list
 
-    # proxy_list += get_proxy_list(GetKuaidailiProxyStrategy())
-    proxy_list += get_proxy_list(Get66ipProxyStrategy())
-    proxy_list += get_proxy_list(GetXiciChinaProxyStrategy())
-    proxy_list += get_proxy_list(GetXiciForeignProxyStrategy())
+    proxy_list += get_proxy_list(GetKuaidailiProxyStrategy())
+    # proxy_list += get_proxy_list(Get66ipProxyStrategy())
+    # proxy_list += get_proxy_list(GetXiciChinaProxyStrategy())
+    # proxy_list += get_proxy_list(GetXiciForeignProxyStrategy())
     return proxy_list

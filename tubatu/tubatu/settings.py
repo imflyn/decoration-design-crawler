@@ -104,7 +104,7 @@ ITEM_PIPELINES = {
 
 
 AJAXCRAWL_ENABLED = False
-IMAGES_STORE = 'D:/scrapy'
+IMAGES_STORE = 'C:/scrapy'
 
 LOG_ENABLED = True
 LOG_FORMAT = '%(asctime)s,%(msecs)d  [%(name)s] %(levelname)s: %(message)s'
